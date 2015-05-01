@@ -28,23 +28,26 @@ router.get('/', requireLogin, function(req, res) {
 /* Login */
 router.post('/login', function(req, res){
   var data = req.body;
-  var user = User.findOne({ email: data.email }, function(err, user){
-    if(err) throw err;
-    user.comparePassword(data.password, function(err, isMatch){
-      if(err || !isMatch){
-        res.status(403).json(err||{status:403, message:"Invalid Password"});
-      }else{
-        req.session.user = user;
-        delete req.session.user.password;
-        delete user.password;
-        res.json({
-          status:200,
-          message:"success",
-          id:user._id,
-          user:user
-        });
-      }
-    });
+  User.findOne({ email: data.email }, function(err, user){
+    if(err || user==null){
+      res.status(403).json({status:403, message:"User not find!"});
+    }else{
+      user.comparePassword(data.password, function(err, isMatch){
+        if(err || !isMatch){
+          res.status(403).json(err||{status:403, message:"Invalid Password"});
+        }else{
+          req.session.user = user;
+          delete req.session.user.password;
+          delete user.password;
+          res.json({
+            status:200,
+            message:"success",
+            id:user._id,
+            user:user
+          });
+        }
+      });
+    }
   });
 });
 
