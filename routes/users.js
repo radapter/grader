@@ -65,10 +65,12 @@ router.post('/signup', function(req, res){
     if (err){
       res.status(400).json(err);
     }else{
+      req.session.user = user;
       res.json({
         status:200,
         message:"success",
-        id:user._id
+        id:user._id,
+        user:user
       });
     }
   });
