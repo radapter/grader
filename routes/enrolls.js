@@ -16,8 +16,24 @@ function requireLogin (req, res, next) {
 /* My enrollments listing. */
 router.get('/', requireLogin, function(req, res) {
   var query = Enroll.find({ _student:req.session.user._id })
-  .populate('_student', '_id fname lname email phone')
+  .populate('_student', '_id fname lname email phone userType')
   .populate('_course').exec(function(err, enrolls){
+    if(err){
+      res.status(500).json(err);
+    }else{
+      res.json({
+        enrolls:enrolls
+      });
+    }
+  });
+});
+
+/* All enrollments under a certain course. */
+router.get('/courses/:courseId', requireLogin, function(req, res){
+  var courseId = req.param("courseId");
+  Enroll.find({ _course:courseId })
+  .populate('_student', '_id fname lname email phone userType')
+  .exec(function(err, enrolls){
     if(err){
       res.status(500).json(err);
     }else{
@@ -54,11 +70,11 @@ router.put('/:enrollId', requireLogin, function(req, res){
   var enroll = Enroll.findOneAndUpdate({ _id: enrollId }, data, { 'new': true }, function(err, enroll){
     if(err || typeof enroll == 'undefined' || enroll==null){
       res.status(400).json(err);
-    }else if(enroll._student!=req.session.user._id){
-      res.json({
-        status:403,
-        message:"Can't edit a enroll you don't owned!"
-      });
+    // }else if(enroll._student!=req.session.user._id){
+    //   res.json({
+    //     status:403,
+    //     message:"Can't edit a enroll you don't owned!"
+    //   });
     }else{
       res.json({
         status:200,

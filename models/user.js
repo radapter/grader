@@ -10,7 +10,8 @@ var userSchema = new Schema({
   password: { type: String, required: true },
   fname: { type: String },
   lname: { type: String },
-  phone: { type: String }
+  phone: { type: String },
+  userType: {type: String, required: true }
 });
 
 // encrypt

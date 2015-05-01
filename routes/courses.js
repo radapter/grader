@@ -15,7 +15,7 @@ function requireLogin (req, res, next) {
 /* All courses listing. */
 router.get('/', requireLogin, function(req, res) {
   var query = Course.find({})
-  .populate('_owner', '_id fname lname email phone').exec(function(err, courses){
+  .populate('_owner', '_id fname lname email phone userType').exec(function(err, courses){
     if(err){
       res.status(500).json(err);
     }else{
@@ -29,7 +29,7 @@ router.get('/', requireLogin, function(req, res) {
 /* Courses I teach listing. */
 router.get('/me', requireLogin, function(req, res) {
   var query = Course.find({ _owner:req.session.user._id })
-  .populate('_owner', '_id fname lname email phone').exec(function(err, courses){
+  .populate('_owner', '_id fname lname email phone userType').exec(function(err, courses){
     if(err){
       res.status(500).json(err);
     }else{
@@ -45,7 +45,7 @@ router.get('/:courseId', function(req, res){
   var data = req.body;
   var courseId = req.param("courseId");
   var course = Course.findOne({ _id: courseId })
-  .populate('_owner', '_id fname lname email phone').exec(function(err, course){
+  .populate('_owner', '_id fname lname email phone userType').exec(function(err, course){
     if(err || typeof course == 'undefined' || course==null){
       res.status(400).json(err);
     }else{

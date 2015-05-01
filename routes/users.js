@@ -13,7 +13,7 @@ function requireLogin (req, res, next) {
 
 /* GET users listing. */
 router.get('/', requireLogin, function(req, res) {
-  var query = User.find({}).select('email fname lname phone');
+  var query = User.find({}).select('email fname lname phone userType');
   query.exec(function(err, users){
     if(err){
       res.status(500).json(err);
@@ -36,10 +36,12 @@ router.post('/login', function(req, res){
       }else{
         req.session.user = user;
         delete req.session.user.password;
+        delete user.password;
         res.json({
           status:200,
           message:"success",
-          id:user._id
+          id:user._id,
+          user:user
         });
       }
     });
