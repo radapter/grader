@@ -4,7 +4,7 @@ CMPE235 project
 Author: Jennifer Wu, Xiaoli Jiang, Tuo Lei
 
 ## API
-PostMan: https://www.getpostman.com/collections/a4836b8923f9ff56bf69
+PostMan: https://www.getpostman.com/collections/e2a9b549d4856b940793
 
 ## Install
 
