@@ -16,7 +16,7 @@ function requireLogin (req, res, next) {
 /* My enrollments listing. */
 router.get('/', requireLogin, function(req, res) {
   var query = Enroll.find({ _student:req.session.user._id })
-  .populate('_student', '_id fname lname email phone userType')
+  .populate('_student', '_id fname lname email phone userType avatarId userId')
   .populate('_course').exec(function(err, enrolls){
     if(err){
       res.status(500).json(err);

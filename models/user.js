@@ -11,7 +11,9 @@ var userSchema = new Schema({
   fname: { type: String },
   lname: { type: String },
   phone: { type: String },
-  userType: {type: String, required: true }
+  userType: {type: String, required: true },
+  avatarId: {type: Number, default:1 },
+  userId: {type: Number, required: true}
 });
 
 // encrypt

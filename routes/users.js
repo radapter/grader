@@ -13,7 +13,7 @@ function requireLogin (req, res, next) {
 
 /* GET users listing. */
 router.get('/', requireLogin, function(req, res) {
-  var query = User.find({}).select('email fname lname phone userType');
+  var query = User.find({}).select('email fname lname phone userType avatarId userId');
   query.exec(function(err, users){
     if(err){
       res.status(500).json(err);
