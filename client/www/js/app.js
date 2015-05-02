@@ -3,6 +3,7 @@
 
     var gApoint = 90.0;
     var currentUser ={};
+    var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
     $( document ).on( "ready", function()
@@ -92,12 +93,13 @@
         var formdata = $('#loginForm').serialize();
         $.ajax({
             method: "POST",
-            url: "http://localhost:3000/users/login",
+            url: urlroot + "/users/login",
             data:formdata,
             success: function(data){
                 console.log("login success");
                 console.log(data);
 
+                //store current user to sessionStorage
                 sessionStorage.setItem('currentUser', JSON.stringify(data.user));
 
                 currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -122,15 +124,20 @@
         e.preventDefault();
 
         var formdata = $('#signupForm').serialize();
+
+        //assign user id with timestamp/1000
+        var userId = Math.floor(Date.now()/1000);
+        formdata = formdata +  "&userId=" + userId;
+
         $.ajax({
             method: "POST",
-            url: "http://localhost:3000/users/signup",
+            url: urlroot + "/users/signup",
             data:formdata,
             success: function(data){
                 console.log("signup success");
-
                 console.log(data);
 
+                //store current user to sessionStorage
                 sessionStorage.setItem('currentUser', JSON.stringify(data.user));
 
                 currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -155,6 +162,12 @@
 
         $("#userFname").html(currentUser.fname);
 
+
+        //userCourse list template
+        var userCoursesTmp = _.template($("script#userCourseListTmp").html());
+        _.templateSettings.variable = "rc";
+
+
         if(currentUser.userType === "teacher") {
 
             //userhome page setting
@@ -163,11 +176,31 @@
             //show createBtn
             $("#gocCreateCourseBtn").show();
 
+            //get userCourseList
+            $.getJSON(urlroot+"/courses/me", function (data) {
+                var userCourseList = data;
+
+                console.log(userCourseList);
+                //data.courses
+                $("#userCourseList").html(userCoursesTmp(userCourseList));
+            });
+
         } else {
             //userhome page setting
             $("#goEnrollCourseBtn").show();
             $("#gocCreateCourseBtn").hide();
+
+            //get userCourseList
+            $.getJSON(urlroot+"/enrolls/", function (data) {
+                var userCourseList = data;
+                console.log(userCourseList);
+                //data.enrolls
+                $("#userCourseList").html(userCoursesTmp(userCourseList));
+
+            });
         }
+
+
     }
 
 
