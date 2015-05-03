@@ -19,11 +19,18 @@
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
     <div data-role="main"  class="ui-content">
-        <h2 class="mc-text-center">Welcome!</h2>
-        <p class="mc-top-margin-1-5"><b>Existing Users</b></p>
-        <a href="#login" class="ui-btn ui-btn-b ui-corner-all">Login</a>
-        <p class="mc-top-margin-1-5"><b>Don't have an account?</b></p>
-        <a href="#signup" class="ui-btn ui-btn-b ui-corner-all">Sign Up</a>
+        <div id="beforeLoginHome">
+            <h2 class="mc-text-center">Welcome!</h2>
+            <p class="mc-top-margin-1-5"><b>Existing Users</b></p>
+            <a href="#login" class="ui-btn ui-btn-b ui-corner-all">Login</a>
+            <p class="mc-top-margin-1-5"><b>Don't have an account?</b></p>
+            <a href="#signup" class="ui-btn ui-btn-b ui-corner-all">Sign Up</a>
+        </div>
+        <div id="afterLoginHome">
+            <p class="mc-top-margin-1-5"><b>Want to leave?</b></p>
+            <button id="logoutBtn" data-icon="flat-new" data-theme="b">Logout</button>
+        </div>
+
         <p></p>
     </div><!-- /content -->
 </div><!-- /landing page -->
@@ -87,70 +94,62 @@
         <h1><span id="userFname"></span> Home</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
-    <div data-role="content"  class="ui-content">
+    <div data-role="content" role="main">
+
+        <!--user profile panel-->
+        <div id="userProfilePanel"></div>
+
+        <!-- BEGIN: userProfileTmp: for teacher - Underscore Template Definition. -->
+        <script type="text/template" id="userProfileTmp">
+            <img src="<%- avatarUrl %>" alt="" height="60"/>
+            <h4><%- fname %> <%- lname %></h4>
+            <h4><%- email %></h4>
+            <h4><%- phone %> </h4>
+            <h4><%- userType %>: <%- userId %> </h4>
+        </script>
+        <!-- END: userProfileTmp Underscore Template Definition. -->
 
         <!--go to enrollCourse page, show when user is a student-->
-        <a href="#enrollCourse" id="goEnrollCourseBtn" class="ui-btn ui-btn-b ui-corner-all">Enroll A Class</a>
-
+        <a href="#enrollCourse" id="goEnrollCourseBtn" class="ui-btn ui-btn-e ui-corner-all">Enroll A Course</a>
 
         <!--go to createCourse page, show when user is a teacher-->
-        <a href="#createCourse" id="gocCreateCourseBtn" class="ui-btn ui-btn-b ui-corner-all">Create A Class</a>
-
+        <a href="#createCourse" id="gocCreateCourseBtn" class="ui-btn ui-btn-e ui-corner-all">Create A Course</a>
 
         <!--TODO course list: enroll(student)/teach(teacher)-->
-        <!--TODO should have button in each item to check course info, see what if grade-->
+        <h4>My Courses</h4>
         <div id="userCourseList"></div>
-
 
         <!-- BEGIN: userCourseListTmp: for teacher - Underscore Template Definition. -->
         <script type="text/template" id="userCourseListTmp">
-
             <div data-role="collapsible-set" data-theme="b" data-content-theme="b">
                 <% _.each(courses, function(course){ %>
-                <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="false">
+
+                <!--TODO should have button in each item to check course info, see what if grade-->
+                <div class="coursePanel" id="<%- course._id %>" data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
                     <h3><%- course.name %></h3>
                     <p><%- course.description %></p>
+                    <!--<button id="goCourseDetailBtn" data-icon="flat-eye" data-theme="f">Course Detail</button>-->
+                    <!--<a href="#courseDetail?courseId=<%- course._id %>" class="ui-btn ui-btn-b ui-corner-all" >Course Detail</a>-->
                 </div>
                 <% }); %>
             </div>
-
         </script>
         <!-- END: userCourseListTmp Underscore Template Definition. -->
 
-
         <!-- BEGIN: userEnrollListTmp: for teacher - Underscore Template Definition. -->
         <script type="text/template" id="userEnrollListTmp">
-
             <div data-role="collapsible-set" data-theme="b" data-content-theme="b">
                 <% _.each(enrolls, function(enroll){ %>
 
-                <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="false">
+                <!--TODO should have button in each item to check course info-->
+                <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
                     <h3><%- enroll.course.name %></h3>
                     <p><%- enroll.course.description %></p>
                 </div>
-
                 <% }); %>
             </div>
-
         </script>
         <!-- END: userEnrollListTmp Underscore Template Definition. -->
-
-
-        <!--<div data-role="collapsible-set" data-theme="b" data-content-theme="b">-->
-            <!--<div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="false">-->
-                <!--<h3>Section 1</h3>-->
-                <!--<p>I'm the collapsible content for section 1</p>-->
-            <!--</div>-->
-            <!--<div data-role="collapsible" data-collapsed-icon="flat-calendar" data-expanded-icon="flat-cross">-->
-                <!--<h3>Section 2</h3>-->
-                <!--<p>I'm the collapsible content for section 2</p>-->
-            <!--</div>-->
-            <!--<div data-role="collapsible" data-collapsed-icon="flat-settings" data-expanded-icon="flat-cross">-->
-                <!--<h3>Section 3</h3>-->
-                <!--<p>I'm the collapsible content for section 3</p>-->
-            <!--</div>-->
-        <!--</div>-->
-
 
 
     </div><!-- /content -->
@@ -160,7 +159,7 @@
 <!--enrollCourse page: for student-->
 <div data-role="page" id="enrollCourse">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <h1>Enroll a Class</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
@@ -172,8 +171,7 @@
         <!--TODO should have button in each item to enroll or go to detail-->
         <div id="allEnrollCourseList">
         </div>
-        
-        
+
     </div><!-- /content -->
 </div><!-- /enrollCourse page -->
 
@@ -181,32 +179,44 @@
 <!--createCourse page: for teacher-->
 <div data-role="page" id="createCourse">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <h1>Create a Course</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
         <!--TODO create a course: form fileds as follows-->
-        <!--{-->
-            <!--"name": "CMPE235: Mobile Security",-->
-            <!--"description": "One of the Best course in the world",-->
-            <!--"meta":{-->
-            <!--"Homeworks": { "max": 500, "factor": 0.1},-->
-            <!--"Labs": { "max": 500, "factor": 0.4},-->
-            <!--"Project": { "max": 200, "factor": 0.2},-->
-            <!--"Presentation": { "max": 100, "factor": 0.1},-->
-            <!--"Midterm": { "max": 100, "factor": 0.1},-->
-            <!--"Final": { "max": 100, "factor": 0.1}-->
-            <!--},-->
-            <!--"policy":{-->
-                <!--"A":0.9,-->
-                <!--"B":0.8,-->
-                <!--"C":0.7,-->
-                <!--"D":0.6-->
-            <!--}-->
-        <!--}-->
-        <form>
+        <form id="createCourseForm">
+
+            <input type="text" name="name" placeholder="course name" required/>
+            <textarea name="description" id="" cols="30" rows="10" placeholder="course description"></textarea>
+
+            <h5>Meta:</h5>
+            <input type="number" name="HomeworksMax" placeholder="homework max"/>
+            <input type="text" name="HomeworksFactor" placeholder="homework factor"/>
+
+            <input type="number" name="LabsMax" placeholder="Labs max"/>
+            <input type="text" name="LabsFactor" placeholder="Labs factor"/>
+
+            <input type="number" name="ProjectMax" placeholder="Project max"/>
+            <input type="text" name="ProjectFactor" placeholder="Project factor"/>
+
+            <input type="number" name="PresentationMax" placeholder="Presentation max"/>
+            <input type="text" name="PresentationFactor" placeholder="Presentation factor"/>
+
+            <input type="number" name="MidtermMax" placeholder="Midterm max"/>
+            <input type="text" name="MidtermFactor" placeholder="Midterm factor"/>
+
+            <input type="number" name="FinalMax" placeholder="Final max"/>
+            <input type="text" name="FinalFactor" placeholder="Final factor"/>
+
+            <input type="text" name="PolicyA" placeholder="Policy A"/>
+            <input type="text" name="PolicyB" placeholder="Policy B"/>
+            <input type="text" name="PolicyC" placeholder="Policy C"/>
+            <input type="text" name="PolicyD" placeholder="Policy D"/>
+
+            <button id="createCourseBtn" data-icon="flat-new" data-theme="b">Create Course</button>
+            <!--TODO: error alert dialoge-->
 
         </form>
 
@@ -216,7 +226,7 @@
 <!--editCourse page: for teacher-->
 <div data-role="page" id="editCourse">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <!--insert course name here-->
         <h1>Edit Course</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
@@ -231,7 +241,7 @@
 <!--courseDetail page: check course meta, enroll/(edit/delete)-->
 <div data-role="page" id="courseDetail">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <!--insert course name here-->
         <h1>Course Detail</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
@@ -244,24 +254,6 @@
 
 
         <!--TODO show course fileds as follows-->
-        <!--{-->
-        <!--"name": "CMPE235: Mobile Security",-->
-        <!--"description": "One of the Best course in the world",-->
-        <!--"meta":{-->
-        <!--"Homeworks": { "max": 500, "factor": 0.1},-->
-        <!--"Labs": { "max": 500, "factor": 0.4},-->
-        <!--"Project": { "max": 200, "factor": 0.2},-->
-        <!--"Presentation": { "max": 100, "factor": 0.1},-->
-        <!--"Midterm": { "max": 100, "factor": 0.1},-->
-        <!--"Final": { "max": 100, "factor": 0.1}-->
-        <!--},-->
-        <!--"policy":{-->
-        <!--"A":0.9,-->
-        <!--"B":0.8,-->
-        <!--"C":0.7,-->
-        <!--"D":0.6-->
-        <!--}-->
-        <!--}-->
         <form>
 
         </form>
@@ -273,7 +265,7 @@
 <!--enrollDetail page: edit score see grade-->
 <div data-role="page" id="enrollDetail">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <h1>Enrollment</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
