@@ -4,6 +4,7 @@
     var gApoint = 90.0;
     var currentUser = {};
     var allCoursesList= {};
+    var userCourseList= {};
     var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
@@ -57,6 +58,15 @@
             prepareCourseShowPage(courseId);
             //load course success, redirect to courseDeatil page
             $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+        });
+
+        //delegate click event on enroll list fo teacher, aim to pass enrollid
+        $('#enrollList').delegate('.enrollPanel', 'click', function () {
+            console.log($(this).attr('id'));
+            var enrollId = $(this).attr('id');
+            prepareEnrollDetailPage(enrollId);
+            //load course success, redirect to courseDeatil page
+            $.mobile.changePage($('#enrollDetail'), 'slide', true, true);
         });
 
         //init hiding landing home icon, show after login
@@ -377,9 +387,12 @@
         if(currentUser.userType === "teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
+            prepareEnrollList(courseId);
+            $('#enrollList').show();
         } else {
             $('#enrollCourseBtn').show();
             $('#editCourseBtn').hide();
+            $('#enrollList').hide();
         }
 
         //courseDetail  template
@@ -421,9 +434,12 @@
         if(currentUser.userType === "teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
+            prepareEnrollList(courseId);
+            $('#enrollList').show();
         } else {
             $('#enrollCourseBtn').show();
             $('#editCourseBtn').hide();
+            $('#enrollList').hide();
         }
 
         //courseDetail  template
@@ -465,9 +481,12 @@
         if(currentUser.userType === "teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
+            prepareEnrollList(course._id);
+            $('#enrollList').show();
         } else {
             $('#enrollCourseBtn').show();
             $('#editCourseBtn').hide();
+            $('#enrollList').hide();
         }
 
         //courseDetail  template
@@ -483,6 +502,20 @@
 
     };
 
+    //prepare enroll list in course detail page for teacher
+    var prepareEnrollList = function (courseId) {
+
+        //get all enrolls under a class
+        $.getJSON(urlroot+"/enrolls/courses/"+ courseId, function (data) {
+            console.log(data);
+            var courseEnrolListTmp = _.template($("script#courseEnrolListTmp").html());
+            $("#enrollList").html(courseEnrolListTmp(data));
+            //!!apply styles after dynamically adding element
+            $("#enrollList").trigger('create');
+        });
+
+    };
+
     //prepare enroll detail page based on stored courseList.enrolls
     var prepareEnrollDetailPage = function (enrollId) {
 
@@ -494,16 +527,22 @@
             var studentEnrollDetailTmp = _.template($("script#studentEnrollDetailTmp").html());
             var studentEnrollData = {};
 
+            console.log("load enroll detail for teacher....");
+
 
             //TODO get enrollData
-
-            //load course template, go to coursedetail page
-            //data.enrolls
-            $("#enrollDetailPanel").html(studentEnrollDetailTmp(studentEnrollData));
-
-            //!!apply styles after dynamically adding element
-            $("#enrollDetailPanel").trigger('create');
-
+            //need GET a enroll with id api for teacher to access enroll detail page
+            //$.getJSON(XX, function (data) {
+            //
+            //    //load course template, go to coursedetail page
+            //    //data.enrolls
+            //    $("#enrollDetailPanel").html(studentEnrollDetailTmp(data));
+            //
+            //    //!!apply styles after dynamically adding element
+            //    $("#enrollDetailPanel").trigger('create');
+            //
+            //});
+            //
 
         } else {
 
@@ -544,8 +583,6 @@
 
         }
 
-
-
     };
 
     //prepare enrollCourse page, get all course list
@@ -566,7 +603,30 @@
 
             //save userCourseList in sessionStorage
             sessionStorage.setItem('allCoursesList', JSON.stringify(allCoursesList));
-            prepareEnrollCoursePage(allCoursesList);
+
+            userCourseList =  JSON.parse(sessionStorage.getItem('userCourseList'));
+
+            var showCourse = [];
+
+            //compare userCourseList and allCourseList, remove user already enrolled courses
+            $.each(allCoursesList.courses, function (index, course) {
+
+
+                var hasEnroll = false;
+                $.each(userCourseList.enrolls, function (index, enroll) {
+                   if(course._id == enroll._course._id) hasEnroll = true;
+                });
+
+                if(!hasEnroll) showCourse.push(course);
+
+            });
+
+            console.log(showCourse);
+
+            var showCourseList = {};
+            showCourseList.courses = showCourse;
+
+            prepareEnrollCoursePage(showCourseList);
             $.mobile.changePage($('#enrollCourse'), 'slide', true, true);
         });
     };

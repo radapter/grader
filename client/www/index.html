@@ -268,10 +268,8 @@
         <!--if student, button to enroll course-->
         <button id="enrollCourseBtn" data-icon="flat-new" data-theme="e">Enroll</button>
 
-
         <!--show course fileds-->
         <div id="courseDetailPanel"></div>
-
         <!-- BEGIN: courseDetailTmp -->
         <script type="text/template" id="courseDetailTmp">
             <h4><%- name %></h4>
@@ -282,6 +280,29 @@
             <h4><%- meta.Final.factor %> </h4>
         </script>
         <!-- END: courseDetailTmp Underscore Template Definition. -->
+
+        <!--if teacher, can see enroll list-->
+        <!--show course fileds-->
+        <div id="enrollList"></div>
+        <!-- BEGIN: courseEnrolListTmp -->
+        <script type="text/template" id="courseEnrolListTmp">
+            <div data-role="collapsible-set" data-theme="e" data-content-theme="e">
+                <% _.each(enrolls, function(enroll){ %>
+
+                <div class="enrollPanel" id="<%- enroll._id %>" data-role="collapsible" data-collapsed-icon="flat-man" data-expanded-icon="flat-cross" data-collapsed="true">
+                    <h3><%- enroll._student.fname %> <%- enroll._student.lname %></h3>
+                    <p><%- enroll.grade.Final.actual %></p>
+                    <p><%- enroll.grade.Midterm.actual %></p>
+                    <p><%- enroll.grade.Presentation.actual %></p>
+                    <p><%- enroll.grade.Project.actual %></p>
+                    <p><%- enroll.grade.Labs.actual %></p>
+                    <p><%- enroll.grade.Homeworks.actual %></p>
+                </div>
+                <% }); %>
+            </div>
+        </script>
+        <!-- END: courseEnrolListTmp Underscore Template Definition. -->
+
 
     </div><!-- /content -->
 </div><!-- /courseDetail page -->
