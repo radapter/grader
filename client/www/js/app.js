@@ -3,6 +3,7 @@
 
     var gApoint = 90.0;
     var currentUser = {};
+    var allCoursesList= {};
     var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
@@ -23,7 +24,7 @@
         //create a course
         $('#createCourseBtn').on('click', createCourse);
         //search course list and enroll
-
+        $('#goEnrollCourseBtn').on('click', goEnrollCourse);
 
         //delegate click event on course panel, aim to pass courseid
         $('#userCourseList').delegate('.coursePanel', 'click', function () {
@@ -47,6 +48,15 @@
 
         });
 
+        //delegate click event on all enroll course list, aim to pass courseid
+        $('#allEnrollCourseList').delegate('.coursePanel', 'click', function () {
+            console.log($(this).attr('id'));
+            var courseId = $(this).attr('id');
+            prepareCourseShowPage(courseId);
+            //load course success, redirect to courseDeatil page
+            $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+        });
+
         //init hiding landing home icon, show after login
         $('#landingHomeIcon').hide();
 
@@ -55,12 +65,16 @@
         if(currentUser) {
             console.log(currentUser.email);
             prepareUserPages(currentUser);
+
+            allCoursesList = JSON.parse(sessionStorage.getItem('allCoursesList'));
+            if(allCoursesList){
+                prepareEnrollCoursePage(allCoursesList);
+            }
+
         } else {
             $('#beforeLoginHome').show();
             $('#afterLoginHome').hide();
         }
-
-
 
         var gradeCutOffSetting = localStorage.getItem('gradeCutOff');
 
@@ -395,6 +409,50 @@
 
     };
 
+    //prepare course show page based on stored allCoursesList.courses
+    var prepareCourseShowPage = function (courseId) {
+
+        if(currentUser.userType === "teacher") {
+            $('#enrollCourseBtn').hide();
+            $('#editCourseBtn').show();
+        } else {
+            $('#enrollCourseBtn').show();
+            $('#editCourseBtn').hide();
+        }
+
+        //courseDetail  template
+        var courseDetailTmp = _.template($("script#courseDetailTmp").html());
+        var courseData = {};
+
+        //first check sessionStroage
+        var allCoursesList = JSON.parse(sessionStorage.getItem('allCoursesList'));
+        if(allCoursesList) {
+
+            //if teacher, go to course detail page
+            if(allCoursesList.courses) {
+                console.log(allCoursesList.courses);
+                $.each(allCoursesList.courses, function (index, course) {
+                    if(course._id === courseId){
+                        console.log("course hit");
+                        courseData = course;
+                    }
+                });
+                console.log(courseData);
+            }
+        }
+        //if not in sessionstorage, call GET to get course detail
+        else {}
+
+        //load course template, go to coursedetail page
+        //data.enrolls
+        $("#courseDetailPanel").html(courseDetailTmp(courseData));
+
+        //!!apply styles after dynamically adding element
+        $("#courseDetailPanel").trigger('create');
+
+
+    };
+
     //prepare enroll detail page based on stored courseList.enrolls
     var prepareEnrollDetailPage = function (enrollId) {
 
@@ -460,6 +518,28 @@
 
     };
 
+    //prepare enrollCourse page, get all course list
+    var prepareEnrollCoursePage = function (allCoursesList) {
+        var allEnrollCourseListTmp = _.template($("script#allEnrollCourseListTmp").html());
+        $("#allEnrollCourseList").html(allEnrollCourseListTmp(allCoursesList));
+        //!!apply styles after dynamically adding element
+        $("#allEnrollCourseList").trigger('create');
+    };
+
+    //goto enrollCourse page, prepare and redirect
+    var goEnrollCourse = function () {
+        //call all course api to get all course list
+        //get userCourseList
+        $.getJSON(urlroot+"/courses/", function (data) {
+            var allCoursesList = data;
+            console.log(allCoursesList);
+
+            //save userCourseList in sessionStorage
+            sessionStorage.setItem('allCoursesList', JSON.stringify(allCoursesList));
+            prepareEnrollCoursePage(allCoursesList);
+            $.mobile.changePage($('#enrollCourse'), 'slide', true, true);
+        });
+    }
 
 }
 
