@@ -199,7 +199,7 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
-        <!--TODO create a course: form fileds as follows-->
+        <!-- create a course: form fileds as follows-->
         <form id="createCourseForm">
 
             <input type="text" name="name" placeholder="course name" required/>
@@ -307,7 +307,7 @@
     </div><!-- /content -->
 </div><!-- /courseDetail page -->
 
-<!--enrollDetail page: edit score see grade-->
+<!--enrollDetail page: show score & grade-->
 <div data-role="page" id="enrollDetail">
     <div data-role="header">
         <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
@@ -319,14 +319,20 @@
         <!--if teacher, button to edit/delete course-->
         <button id="editScoreBtn" data-icon="flat-new" data-theme="b">Edit Score</button>
 
-        <!--if student, button to enroll course-->
-        <button id="whatifBtn" data-icon="flat-new" data-theme="e">What-if Score</button>
+
 
         <!--show course fileds-->
         <div id="enrollDetailPanel"></div>
 
         <!-- BEGIN: myEnrollDetailTmp for student view -->
         <script type="text/template" id="myEnrollDetailTmp">
+
+            <!--if student, button to enroll course-->
+
+            <!--pass enroll id as data-enrollId-->
+            <button id="whatifBtn" data-icon="flat-new" data-enrollid="<%- _id %>" data-theme="e">What-if Score</button>
+
+
             Course info:
             <h4><%- _course.name %></h4>
             <h4><%- _course.description %></h4>
@@ -365,6 +371,60 @@
     </div><!-- /content -->
 </div><!-- /enrollDetail page -->
 
+<!--whatifEdit page: student edit whatif score see grade-->
+<div data-role="page" id="whatifEdit">
+    <div data-role="header">
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
+        <h1>What-if Score</h1>
+        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+    </div><!-- /header -->
+    <div data-role="content"  class="ui-content">
+
+        <!--show this course fileds-->
+        <div id="enrollCoursePanel"></div>
+        <!-- BEGIN: courseDetailTmp -->
+        <script type="text/template" id="enrollCoursePanelTmp">
+            <h4><%- _course.name %></h4>
+
+            <!--input whatif scores-->
+            <form id="whatifGradeForm">
+
+                <h5>What-if Grade:</h5>
+
+                <!--TODO change to slider, max with meta.XX.max-->
+
+                <label for="HomeworksWhatif">Homeworks Whatif:</label>
+                <input type="range" name="HomeworksWhatif" id="HomeworksWhatif" min="0" max="<%- _course.meta.Homeworks.max %>" />
+
+                <label for="LabsWhatif">Labs Whatif:</label>
+                <input type="range" name="LabsWhatif" id="LabsWhatif" min="0" max="<%- _course.meta.Labs.max %>" />
+
+                <label for="ProjectWhatif">Project Whatif:</label>
+                <input type="range" name="ProjectWhatif" id="ProjectWhatif" min="0" max="<%- _course.meta.Project.max %>" />
+
+                <label for="PresentationWhatif">Presentation Whatif:</label>
+                <input type="range" name="PresentationWhatif" id="PresentationWhatif" min="0" max="<%- _course.meta.Presentation.max %>" />
+
+                <label for="MidtermWhatif">Midterm Whatif:</label>
+                <input type="range" name="MidtermWhatif" id="MidtermWhatif" min="0" max="<%- _course.meta.Midterm.max %>" />
+
+                <label for="FinalWhatif">Final Whatif:</label>
+                <input type="range" name="FinalWhatif" id="FinalWhatif" min="0" max="<%- _course.meta.Final.max %>" />
+
+                <br/>
+                <button id="calWhatifGradeBtn" data-icon="flat-new" data-theme="b">Calculate what-if grade</button>
+                <!--TODO: error alert dialoge-->
+
+            </form>
+        </script>
+
+
+
+        <!--TODO calculate My total current grade-->
+        <h5>My Grade: <span id="whatifGrade"></span></h5>
+
+    </div><!-- /content -->
+</div><!-- /whatifEdit page -->
 
 
 <!--test page-->

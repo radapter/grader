@@ -5,6 +5,7 @@
     var currentUser = {};
     var allCoursesList= {};
     var userCourseList= {};
+    var tempEnrollData = {};
     var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
@@ -28,6 +29,7 @@
         $('#goEnrollCourseBtn').on('click', goEnrollCourse);
         //enroll a course
         $('#enrollCourseBtn').on('click', enrollCourse);
+
 
         //delegate click event on course panel, aim to pass courseid
         $('#userCourseList').delegate('.coursePanel', 'click', function () {
@@ -532,17 +534,17 @@
 
             //TODO get enrollData
             //need GET a enroll with id api for teacher to access enroll detail page
-            //$.getJSON(XX, function (data) {
-            //
-            //    //load course template, go to coursedetail page
-            //    //data.enrolls
-            //    $("#enrollDetailPanel").html(studentEnrollDetailTmp(data));
-            //
-            //    //!!apply styles after dynamically adding element
-            //    $("#enrollDetailPanel").trigger('create');
-            //
-            //});
-            //
+            $.getJSON(urlroot+"/enrolls/"+enrollId, function (data) {
+
+                //load course template, go to coursedetail page
+                //data.enrolls
+                $("#enrollDetailPanel").html(studentEnrollDetailTmp(data));
+
+                //!!apply styles after dynamically adding element
+                $("#enrollDetailPanel").trigger('create');
+
+            });
+
 
         } else {
 
@@ -566,6 +568,7 @@
                             console.log("enroll hit");
 
                             myEnrollData = enroll;
+                            sessionStorage.setItem('tempEnrollData',JSON.stringify(myEnrollData));
 
                         }
                     });
@@ -581,6 +584,9 @@
             //!!apply styles after dynamically adding element
             $("#enrollDetailPanel").trigger('create');
 
+            //calculate what-if score
+            //!!!render in template, events after loading template
+            $('#whatifBtn').on('click', goWhatifPage);
         }
 
     };
@@ -657,6 +663,89 @@
             }
         });
     };
+
+    //prepare and go to whatif page
+    var goWhatifPage = function () {
+        var enrollid = $(this).data("enrollid");
+
+        //get enroll with enrollid
+        tempEnrollData = JSON.parse(sessionStorage.getItem("tempEnrollData"));
+        console.log(tempEnrollData);
+
+        var myEnrollDetailTmp = _.template($("script#enrollCoursePanelTmp").html());
+        $("#enrollCoursePanel").html(myEnrollDetailTmp(tempEnrollData));
+        //!!apply styles after dynamically adding element
+        $("#enrollCoursePanel").trigger('create');
+
+        //calculte whatif grade
+        $('#calWhatifGradeBtn').on('click', calWhatifGradePre);
+
+        $.mobile.changePage($('#whatifEdit'), 'slide', true, true);
+
+    };
+
+    var calWhatifGradePre = function (e) {
+        e.preventDefault();
+        var form = $('#whatifGradeForm');
+        console.log(form);
+
+        //collect user input
+        var whatifgrade = {};
+        var Homeworks = {};
+        Homeworks.whatif = form.find('input[name="HomeworksWhatif"]').val();
+        var Labs = {};
+        Labs.whatif = form.find('input[name="LabsWhatif"]').val();
+        var Project = {};
+        Project.whatif = form.find('input[name="ProjectWhatif"]').val();
+        var Presentation = {};
+        Presentation.whatif = form.find('input[name="PresentationWhatif"]').val();
+        var Midterm = {};
+        Midterm.whatif = form.find('input[name="MidtermWhatif"]').val();
+        var Final = {};
+        Final.whatif = form.find('input[name="FinalWhatif"]').val();
+        whatifgrade.Homeworks = Homeworks;
+        whatifgrade.Labs = Labs;
+        whatifgrade.Project = Project;
+        whatifgrade.Presentation = Presentation;
+        whatifgrade.Midterm = Midterm;
+        whatifgrade.Final = Final;
+
+        console.log(whatifgrade);
+
+        var grade = calWhatifGrade(whatifgrade);
+
+        $('#whatifGrade').html(grade);
+
+    };
+
+    var calWhatifGrade = function (whatifgrade) {
+        //get current enroll data
+        console.log(tempEnrollData);
+
+        //calculate score based on meta
+        var meta = tempEnrollData._course.meta;
+        var hwscore = whatifgrade.Homeworks.whatif/meta.Homeworks.max * meta.Homeworks.factor;
+        var labscore = whatifgrade.Labs.whatif/meta.Labs.max * meta.Labs.factor;
+        var projectscore = whatifgrade.Project.whatif/meta.Project.max * meta.Project.factor;
+        var presentationscore = whatifgrade.Presentation.whatif/meta.Presentation.max * meta.Presentation.factor;
+        var midtermscore = whatifgrade.Midterm.whatif/meta.Midterm.max * meta.Midterm.factor;
+        var finalscore = whatifgrade.Final.whatif/meta.Final.max * meta.Final.factor;
+
+        var totalScore = hwscore + labscore + projectscore+ presentationscore+ midtermscore + finalscore;
+
+        //match policy
+        var policy = tempEnrollData._course.policy;
+        if(totalScore >= policy.A) {
+            return 'A';
+        } else if(totalScore >= policy.B) {
+            return 'B';
+        } else if(totalScore >= policy.C) {
+            return 'C';
+        } else {
+            return 'D';
+        }
+
+    }
 
 }
 
