@@ -2,7 +2,7 @@
     "use strict";
 
     var gApoint = 90.0;
-    var currentUser ={};
+    var currentUser = {};
     var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
@@ -12,14 +12,6 @@
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
         $('#cancelSettings').on('click', cancelSettings);
-        $('#createCourseBtn').on('click', createCourse);
-
-        //delegate click event on course panel, aim to pass courseid
-        $('#userCourseList').delegate('.coursePanel', 'click', function () {
-            console.log($(this).attr('id'));
-
-        });
-
         $('#testJson').on('click', getlocJson);
 
         //login button handler
@@ -28,9 +20,37 @@
         $('#logoutBtn').on('click', logout);
         //signup button handler
         $('#signupBtn').on('click', signup);
+        //create a course
+        $('#createCourseBtn').on('click', createCourse);
+        //search course list and enroll
 
 
-        //TODO control logged in user info and show/hide different components in pages
+        //delegate click event on course panel, aim to pass courseid
+        $('#userCourseList').delegate('.coursePanel', 'click', function () {
+            console.log($(this).attr('id'));
+
+            //if teacher, go to course detail page
+            if(currentUser.userType === "teacher"){
+                var courseId = $(this).attr('id');
+                prepareCourseDetailPage(courseId);
+                //load course success, redirect to courseDeatil page
+                $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+            }
+
+            //if student, go to enroll detail page
+            if(currentUser.userType === "student"){
+                var enrollId = $(this).attr('id');
+                prepareEnrollDetailPage(enrollId);
+                //load course success, redirect to enrollDetail page
+                $.mobile.changePage($('#enrollDetail'), 'slide', true, true);
+            }
+
+        });
+
+        //init hiding landing home icon, show after login
+        $('#landingHomeIcon').hide();
+
+        // control logged in user info and show/hide different components in pages
         currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
         if(currentUser) {
             console.log(currentUser.email);
@@ -39,6 +59,7 @@
             $('#beforeLoginHome').show();
             $('#afterLoginHome').hide();
         }
+
 
 
         var gradeCutOffSetting = localStorage.getItem('gradeCutOff');
@@ -124,7 +145,6 @@
                 currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
                 console.log(currentUser.email);
 
-
                 prepareUserPages(currentUser);
 
                 //login success, redirect to main page
@@ -151,6 +171,7 @@
                 sessionStorage.clear();
                 $('#beforeLoginHome').show();
                 $('#afterLoginHome').hide();
+                $('#landingHomeIcon').hide();
             },
             error: function(err){
                 console.log("login failed");
@@ -159,7 +180,6 @@
             }
         });
     };
-
 
     var signup = function (e) {
         e.preventDefault();
@@ -265,21 +285,18 @@
 
     };
 
-
-    function goCourseDetail(courseId) {
-        console.log(courseId);
-    }
-
     //prepare pages based on user info
     var prepareUserPages = function (currentUser) {
 
         $('#beforeLoginHome').hide();
         $('#afterLoginHome').show();
+        $('#landingHomeIcon').show();
 
         $("#userFname").html(currentUser.fname);
 
         //userCourse list template
         var userCoursesTmp = _.template($("script#userCourseListTmp").html());
+        var userEnrollListTmp = _.template($("script#userEnrollListTmp").html());
 
         //load user profile
         var userProfileTmp = _.template($("script#userProfileTmp").html());
@@ -298,8 +315,11 @@
             //get userCourseList
             $.getJSON(urlroot+"/courses/me", function (data) {
                 var userCourseList = data;
-
                 console.log(userCourseList);
+
+                //save userCourseList in sessionStorage
+                sessionStorage.setItem('userCourseList', JSON.stringify(userCourseList));
+
                 //data.courses
                 $("#userCourseList").html(userCoursesTmp(userCourseList));
 
@@ -316,8 +336,12 @@
             $.getJSON(urlroot+"/enrolls/", function (data) {
                 var userCourseList = data;
                 console.log(userCourseList);
+
+                //save userCourseList in sessionStorage
+                sessionStorage.setItem('userCourseList', JSON.stringify(userCourseList));
+
                 //data.enrolls
-                $("#userCourseList").html(userCoursesTmp(userCourseList));
+                $("#userCourseList").html(userEnrollListTmp(userCourseList));
 
                 //!!apply styles after dynamically adding element
                 $("#userCourseList").trigger('create');
@@ -325,8 +349,116 @@
             });
         }
 
+    };
 
-    }
+    //prepare course detail page based on stored courseList.courses
+    var prepareCourseDetailPage = function (courseId) {
+
+        if(currentUser.userType === "teacher") {
+            $('#enrollCourseBtn').hide();
+            $('#editCourseBtn').show();
+        } else {
+            $('#enrollCourseBtn').show();
+            $('#editCourseBtn').hide();
+        }
+
+        //courseDetail  template
+        var courseDetailTmp = _.template($("script#courseDetailTmp").html());
+        var courseData = {};
+
+        //first check sessionStroage
+        var userCourseList = JSON.parse(sessionStorage.getItem('userCourseList'));
+        if(userCourseList) {
+
+            //if teacher, go to course detail page
+            if(userCourseList.courses) {
+                console.log(userCourseList.courses);
+                $.each(userCourseList.courses, function (index, course) {
+                    if(course._id === courseId){
+                        console.log("course hit");
+                        courseData = course;
+                    }
+                });
+                console.log(courseData);
+            }
+        }
+        //if not in sessionstorage, call GET to get course detail
+        else {}
+
+        //load course template, go to coursedetail page
+        //data.enrolls
+        $("#courseDetailPanel").html(courseDetailTmp(courseData));
+
+        //!!apply styles after dynamically adding element
+        $("#courseDetailPanel").trigger('create');
+
+
+    };
+
+    //prepare enroll detail page based on stored courseList.enrolls
+    var prepareEnrollDetailPage = function (enrollId) {
+
+        if(currentUser.userType === "teacher") {
+            $('#whatifBtn').hide();
+            $('#editScoreBtn').show();
+
+            //courseDetail  template
+            var studentEnrollDetailTmp = _.template($("script#studentEnrollDetailTmp").html());
+            var studentEnrollData = {};
+
+
+            //TODO get enrollData
+
+            //load course template, go to coursedetail page
+            //data.enrolls
+            $("#enrollDetailPanel").html(studentEnrollDetailTmp(studentEnrollData));
+
+            //!!apply styles after dynamically adding element
+            $("#enrollDetailPanel").trigger('create');
+
+
+        } else {
+
+            // if student
+            $('#whatifBtn').show();
+            $('#editScoreBtn').hide();
+
+            //courseDetail  template
+            var myEnrollDetailTmp = _.template($("script#myEnrollDetailTmp").html());
+            var myEnrollData = {};
+
+            //first check sessionStroage
+            var userCourseList = JSON.parse(sessionStorage.getItem('userCourseList'));
+            if(userCourseList) {
+
+                //if student, go to enroll detail page
+                if(userCourseList.enrolls){
+                    console.log(userCourseList.enrolls);
+                    $.each(userCourseList.enrolls, function (index, enroll) {
+                        if(enroll._id === enrollId){
+                            console.log("enroll hit");
+
+                            myEnrollData = enroll;
+
+                        }
+                    });
+                }
+            }
+            //if not in sessionstorage, call GET to get course detail
+            else {}
+
+            //load course template, go to coursedetail page
+            //data.enrolls
+            $("#enrollDetailPanel").html(myEnrollDetailTmp(myEnrollData));
+
+            //!!apply styles after dynamically adding element
+            $("#enrollDetailPanel").trigger('create');
+
+        }
+
+
+
+    };
 
 
 }

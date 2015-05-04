@@ -14,7 +14,7 @@
 <!--landing page-->
 <div data-role="page" id="home">
     <div data-role="header">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home" id="landingHomeIcon">Home</a>
         <h1>Grade Factory</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
@@ -142,9 +142,9 @@
                 <% _.each(enrolls, function(enroll){ %>
 
                 <!--TODO should have button in each item to check course info-->
-                <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
-                    <h3><%- enroll.course.name %></h3>
-                    <p><%- enroll.course.description %></p>
+                <div class="coursePanel" id="<%- enroll._id %>" data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
+                    <h3><%- enroll._course.name %></h3>
+                    <p><%- enroll._course.description %></p>
                 </div>
                 <% }); %>
             </div>
@@ -154,7 +154,6 @@
 
     </div><!-- /content -->
 </div><!-- /userhome page -->
-
 
 <!--enrollCourse page: for student-->
 <div data-role="page" id="enrollCourse">
@@ -174,7 +173,6 @@
 
     </div><!-- /content -->
 </div><!-- /enrollCourse page -->
-
 
 <!--createCourse page: for teacher-->
 <div data-role="page" id="createCourse">
@@ -248,19 +246,28 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
-        <!--TODO: if teacher, button to edit/delete course-->
+        <!--if teacher, button to edit/delete course-->
+        <button id="editCourseBtn" data-icon="flat-new" data-theme="b">Edit</button>
 
-        <!--TODO: if student, button to enroll course-->
+        <!--if student, button to enroll course-->
+        <button id="enrollCourseBtn" data-icon="flat-new" data-theme="e">Enroll</button>
 
 
-        <!--TODO show course fileds as follows-->
-        <form>
+        <!--show course fileds-->
+        <div id="courseDetailPanel"></div>
 
-        </form>
+        <!-- BEGIN: courseDetailTmp -->
+        <script type="text/template" id="courseDetailTmp">
+            <h4><%- name %></h4>
+            <h4><%- description %></h4>
+            <h4><%- _owner.fname %> </h4>
+            <h4><%- policy.A %></h4>
+            <h4><%- meta.Final.factor %> </h4>
+        </script>
+        <!-- END: courseDetailTmp Underscore Template Definition. -->
 
     </div><!-- /content -->
 </div><!-- /courseDetail page -->
-
 
 <!--enrollDetail page: edit score see grade-->
 <div data-role="page" id="enrollDetail">
@@ -271,10 +278,51 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
-        <!--TODO: if teacher, edit actual score and see grade-->
+        <!--if teacher, button to edit/delete course-->
+        <button id="editScoreBtn" data-icon="flat-new" data-theme="b">Edit Score</button>
 
-        <!--TODO: if student, edit whatif and see grade-->
+        <!--if student, button to enroll course-->
+        <button id="whatifBtn" data-icon="flat-new" data-theme="e">What-if Score</button>
 
+        <!--show course fileds-->
+        <div id="enrollDetailPanel"></div>
+
+        <!-- BEGIN: myEnrollDetailTmp for student view -->
+        <script type="text/template" id="myEnrollDetailTmp">
+            Course info:
+            <h4><%- _course.name %></h4>
+            <h4><%- _course.description %></h4>
+
+            <!--TODO pop a dialog for all students-->
+            <!--<button>Show All Students</button>-->
+
+            Current grade:
+            <h4>Final: <%- grade.Final.actual %> </h4>
+            <h4>Midterm: <%- grade.Midterm.actual %> </h4>
+            <h4>Presentation: <%- grade.Presentation.actual %> </h4>
+            <h4>Project: <%- grade.Project.actual %> </h4>
+            <h4>Labs: <%- grade.Labs.actual %> </h4>
+            <h4>Homeworks: <%- grade.Homeworks.actual %> </h4>
+        </script>
+        <!-- END: courseDetailTmp Underscore Template Definition. -->
+
+        <!-- BEGIN: studentEnrollDetailTmp for teacher view -->
+        <script type="text/template" id="studentEnrollDetailTmp">
+
+            Student:
+            <h4><%- _student.fname %> <%- _student.lname %></h4>
+
+            Current grade:
+            <h4>Final: <%- grade.Final.actual %> </h4>
+            <h4>Midterm: <%- grade.Midterm.actual %> </h4>
+            <h4>Presentation: <%- grade.Presentation.actual %> </h4>
+            <h4>Project: <%- grade.Project.actual %> </h4>
+            <h4>Labs: <%- grade.Labs.actual %> </h4>
+            <h4>Homeworks: <%- grade.Homeworks.actual %> </h4>
+        </script>
+        <!-- END: courseDetailTmp Underscore Template Definition. -->
+
+        <!--TODO calculate My total current grade-->
 
     </div><!-- /content -->
 </div><!-- /enrollDetail page -->
