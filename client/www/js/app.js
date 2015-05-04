@@ -23,8 +23,10 @@
         $('#signupBtn').on('click', signup);
         //create a course
         $('#createCourseBtn').on('click', createCourse);
-        //search course list and enroll
+        //search course list
         $('#goEnrollCourseBtn').on('click', goEnrollCourse);
+        //enroll a course
+        $('#enrollCourseBtn').on('click', enrollCourse);
 
         //delegate click event on course panel, aim to pass courseid
         $('#userCourseList').delegate('.coursePanel', 'click', function () {
@@ -290,7 +292,11 @@
             success: function(data){
                 console.log(data.course);
 
-                //TODO goto course detail page
+                // goto course detail page
+                prepareCourseDataPage(data.course);
+                prepareUserPages(currentUser);
+                $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+
             },
             error: function(err){
                 console.log(err);
@@ -453,6 +459,30 @@
 
     };
 
+    //prepare course show page based on passed course data
+    var prepareCourseDataPage = function (course) {
+
+        if(currentUser.userType === "teacher") {
+            $('#enrollCourseBtn').hide();
+            $('#editCourseBtn').show();
+        } else {
+            $('#enrollCourseBtn').show();
+            $('#editCourseBtn').hide();
+        }
+
+        //courseDetail  template
+        var courseDetailTmp = _.template($("script#courseDetailTmp").html());
+
+        //load course template, go to coursedetail page
+        //data.enrolls
+        $("#courseDetailPanel").html(courseDetailTmp(course));
+
+        //!!apply styles after dynamically adding element
+        $("#courseDetailPanel").trigger('create');
+
+
+    };
+
     //prepare enroll detail page based on stored courseList.enrolls
     var prepareEnrollDetailPage = function (enrollId) {
 
@@ -539,7 +569,34 @@
             prepareEnrollCoursePage(allCoursesList);
             $.mobile.changePage($('#enrollCourse'), 'slide', true, true);
         });
-    }
+    };
+
+    //enroll a course
+    var enrollCourse = function () {
+        //get courseId
+        var courseId = $('#courseIDDetailPage').html();
+        console.log(courseId);
+
+        var enrollObj ={};
+        enrollObj._course = courseId;
+
+        $.ajax({
+            url:urlroot+"/enrolls",
+            type: "POST",
+            data: JSON.stringify(enrollObj),
+            contentType: "application/json",
+            success: function(data){
+                console.log(data);
+
+                // goto userhome page
+                prepareUserPages(currentUser);
+                $.mobile.changePage($('#userhome'), 'slide', true, true);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    };
 
 }
 
