@@ -28,6 +28,20 @@ router.get('/', requireLogin, function(req, res) {
   });
 });
 
+/* Enrollment details */
+router.get('/:enrollId', requireLogin, function(req, res){
+  var enrollId = req.param("enrollId");
+  Enroll.find({ _id: enrollId })
+  .populate('_student', '_id fname lname email phone userType avatarId userId')
+  .populate('_course').exec(function(err, enroll){
+    if(err || typeof(enroll)=='undefined' || enroll==null){
+      res.status(500).json(err);
+    }else{
+      res.json(enroll);
+    }
+  });
+});
+
 /* All enrollments under a certain course. */
 router.get('/courses/:courseId', requireLogin, function(req, res){
   var courseId = req.param("courseId");
