@@ -25,13 +25,20 @@
         $('#signupBtn').on('click', signup);
         //create a course
         $('#createCourseBtn').on('click', createCourse);
+
+        //edit a course
+        $('#editCourseBtn').on('click', editCourse);
+
         //search course list
         $('#goEnrollCourseBtn').on('click', goEnrollCourse);
         //enroll a course
         $('#enrollCourseBtn').on('click', enrollCourse);
 
-        //back to courselist
+        //back to courselist - teacher
         $('#backToCourseBtn').on('click', backToCourseDetail);
+        //back to enroldetail - student
+        $('#backToEnrollBtn').on('click', backToEnrollDetail);
+
 
         //delegate click event on course panel, aim to pass courseid
         $('#userCourseList').delegate('.coursePanel', 'click', function () {
@@ -526,6 +533,8 @@
         if(currentUser.userType === "teacher") {
             $('#whatifBtn').hide();
             $('#editScoreBtn').show();
+            $('#backToCourseBtn').show();
+
 
             //courseDetail  template
             var studentEnrollDetailTmp = _.template($("script#studentEnrollDetailTmp").html());
@@ -559,6 +568,7 @@
             // if student
             $('#whatifBtn').show();
             $('#editScoreBtn').hide();
+            $('#backToCourseBtn').hide();
 
             //courseDetail  template
             var myEnrollDetailTmp = _.template($("script#myEnrollDetailTmp").html());
@@ -721,26 +731,35 @@
 
         console.log(whatifgrade);
 
-        // post whatif grade
-        $.ajax({
-            type: 'PUT',
-            data: JSON.stringify(whatifgrade),
-            contentType: "application/json",
-            url: urlroot+"/enrolls/"+tempEnrollData._id,
-            success: function (data) {
-                console.log(data);
+        var gradeData = {};
+        gradeData.grade = whatifgrade;
 
-                //TODO might need to update the other views
-                prepareUserPages(currentUser);
-                prepareEnrollList(data.enroll._course);
 
-                var grade = calWhatifGrade(whatifgrade);
-                $('#whatifGrade').html(grade);
-            },
-            error: function(err){
-                console.log(err);
-            }
-        });
+        // post whatif grade - confilict with teacher put, not save what if currently
+        //$.ajax({
+        //    type: 'PUT',
+        //    data: JSON.stringify(gradeData),
+        //    contentType: "application/json",
+        //    url: urlroot+"/enrolls/"+tempEnrollData._id,
+        //    success: function (data) {
+        //        console.log(data);
+        //
+        //        //TODO might need to update the other views
+        //        prepareUserPages(currentUser);
+        //        prepareEnrollList(data.enroll._course);
+        //
+        //        var grade = calWhatifGrade(whatifgrade);
+        //        $('#whatifGrade').html(grade);
+        //    },
+        //    error: function(err){
+        //        console.log(err);
+        //    }
+        //});
+
+
+
+        var grade = calWhatifGrade(whatifgrade);
+        $('#whatifGrade').html(grade);
     };
 
     var calWhatifGrade = function (whatifgrade) {
@@ -789,7 +808,6 @@
         $.mobile.changePage($('#actualScoreEdit'), 'slide', true, true);
     };
 
-
     //get whatif inputs and build inputs
     var calActualGradePre = function (e) {
         e.preventDefault();
@@ -830,7 +848,7 @@
             success: function (data) {
                 console.log(data);
 
-                //TODO might need to update the other views
+                //TODO might need to update the other views - not stable
                 prepareEnrollList(data.enroll._course);
                 prepareEnrollDetailPage(data.enroll._id);
 
@@ -875,10 +893,108 @@
 
     };
 
-
     var backToCourseDetail = function () {
         $.mobile.changePage($('#courseDetail'), 'slide', true, true);
     };
+
+    var backToEnrollDetail = function () {
+        $.mobile.changePage($('#enrollDetail'), 'slide', true, true);
+    };
+
+    //eidtcourse for teahcer, using userCourseList.courses
+    var editCourse = function () {
+        var courseid= $('#courseIDDetailPage').html();
+        console.log(courseid);
+
+        userCourseList = JSON.parse(sessionStorage.getItem("userCourseList"));
+        var coursedata = {};
+
+        $.each(userCourseList.courses, function (index, course) {
+            if(course._id === courseid) {
+                coursedata = course;
+            }
+        });
+
+        var editCourseTmp = _.template($("script#editCourseTmp").html());
+        $("#editCoursePanel").html(editCourseTmp(coursedata));
+        //!!apply styles after dynamically adding element
+        $("#editCoursePanel").trigger('create');
+        //calculte whatif grade
+        $('#editCourseSubmitBtn').on('click', editCourseSubmit);
+
+        $.mobile.changePage($('#editCourse'), 'slide', true, true);
+    };
+
+    var editCourseSubmit = function () {
+        var form = $('#editCourseForm');
+
+        var courseid= $('#courseIDDetailPage').html();
+        console.log(courseid);
+
+        var courseObj = {};
+        courseObj.name = form.find("input[name=name]").val();
+        courseObj.description = form.find("textarea[name=description]").val();
+
+        var meta ={};
+        var Homeworks ={};
+        Homeworks.max = form.find("input[name=HomeworksMax]").val();
+        Homeworks.factor = form.find("input[name=HomeworksFactor]").val();
+        var Labs ={};
+        Labs.max = form.find("input[name=LabsMax]").val();
+        Labs.factor = form.find("input[name=LabsFactor]").val();
+        var Project ={};
+        Project.max = form.find("input[name=ProjectMax]").val();
+        Project.factor = form.find("input[name=ProjectFactor]").val();
+        var Presentation ={};
+        Presentation.max = form.find("input[name=PresentationMax]").val();
+        Presentation.factor = form.find("input[name=PresentationFactor]").val();
+        var Midterm ={};
+        Midterm.max = form.find("input[name=MidtermMax]").val();
+        Midterm.factor = form.find("input[name=MidtermFactor]").val();
+        var Final ={};
+        Final.max = form.find("input[name=FinalMax]").val();
+        Final.factor = form.find("input[name=FinalFactor]").val();
+
+        meta.Homeworks = Homeworks;
+        meta.Labs = Labs;
+        meta.Project = Project;
+        meta.Presentation = Presentation;
+        meta.Midterm = Midterm;
+        meta.Final = Final;
+
+        courseObj.meta = meta;
+
+        var policy ={};
+        policy.A = form.find("input[name=PolicyA]").val();
+        policy.B = form.find("input[name=PolicyB]").val();
+        policy.C = form.find("input[name=PolicyC]").val();
+        policy.D = form.find("input[name=PolicyD]").val();
+
+        courseObj.policy = policy;
+
+        console.log(courseObj);
+
+        $.ajax({
+            url:urlroot+"/courses/" + courseid,
+            type: "PUT",
+            data: JSON.stringify(courseObj),
+            contentType: "application/json",
+            success: function(data){
+                console.log(data.course);
+
+                // goto course detail page
+                prepareCourseDataPage(data.course);
+                prepareUserPages(currentUser);
+                $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+
+    }
+
 }
 
 

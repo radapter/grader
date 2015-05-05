@@ -247,7 +247,64 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
-        <!--TODO edit form-->
+        <div id="editCoursePanel"></div>
+        <!-- BEGIN: editCourseTmp for teacher view -->
+        <script type="text/template" id="editCourseTmp">
+            <!-- edit a course form-->
+            <form id="editCourseForm">
+
+                <input type="text" name="name" value="<%- name %>" placeholder="course name" required/>
+                <textarea name="description" cols="30" rows="10" placeholder="course description"><%- description %></textarea>
+
+                <h5>Meta:</h5>
+                Homeworks Max
+                <input type="number" name="HomeworksMax" value="<%- meta.Homeworks.max %>" placeholder="homework max"/>
+                Homeworks Factor
+                <input type="text" name="HomeworksFactor" value="<%- meta.Homeworks.factor %>" placeholder="homework factor"/>
+
+                Labs Max
+                <input type="number" name="LabsMax" value="<%- meta.Labs.max %>" placeholder="Labs max"/>
+                Labs Factor
+                <input type="text" name="LabsFactor" value="<%- meta.Labs.factor %>" placeholder="Labs factor"/>
+
+                Project Max
+                <input type="number" name="ProjectMax" value="<%- meta.Project.max %>" placeholder="Project max"/>
+                Project Factor
+                <input type="text" name="ProjectFactor" value="<%- meta.Project.factor %>" placeholder="Project factor"/>
+
+                Presentation Max
+                <input type="number" name="PresentationMax" value="<%- meta.Presentation.max %>" placeholder="Presentation max"/>
+                Presentation Factor
+                <input type="text" name="PresentationFactor" value="<%- meta.Presentation.factor %>" placeholder="Presentation factor"/>
+
+                Midterm Max
+                <input type="number" name="MidtermMax" value="<%- meta.Midterm.max %>" placeholder="Midterm max"/>
+                Midterm Factor
+                <input type="text" name="MidtermFactor" value="<%- meta.Midterm.factor %>" placeholder="Midterm factor"/>
+
+                Final Max
+                <input type="number" name="FinalMax" value="<%- meta.Final.max %>" placeholder="Final max"/>
+                Final Factor
+                <input type="text" name="FinalFactor" value="<%- meta.Final.factor %>" placeholder="Final factor"/>
+
+                Policy - A
+                <input type="text" name="PolicyA" value="<%- policy.A %>" placeholder="Policy A"/>
+                Policy - B
+                <input type="text" name="PolicyB" value="<%- policy.B %>" placeholder="Policy B"/>
+                Policy - C
+                <input type="text" name="PolicyC" value="<%- policy.C %>" placeholder="Policy C"/>
+                Policy - D
+                <input type="text" name="PolicyD" value="<%- policy.D %>" placeholder="Policy D"/>
+
+                <button id="editCourseSubmitBtn" data-icon="flat-new" data-theme="b">Edit Course</button>
+                <!--TODO: error alert dialoge-->
+
+            </form>
+
+        </script>
+        <!-- END: editCourseTmp Underscore Template Definition. -->
+
+
 
     </div><!-- /content -->
 </div><!-- /editCourse page -->
@@ -379,6 +436,8 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
 
+        <button id="backToEnrollBtn" data-icon="flat-new" data-theme="e">Back to Enroll</button>
+
         <!--show this course fileds-->
         <div id="enrollCoursePanel"></div>
         <!-- BEGIN: courseDetailTmp -->
@@ -393,22 +452,22 @@
                 <!-- change to slider, max with meta.XX.max-->
 
                 <label for="HomeworksWhatif">Homeworks Whatif:</label>
-                <input type="range" name="HomeworksWhatif" id="HomeworksWhatif" min="0" max="<%- _course.meta.Homeworks.max %>" />
+                <input type="range" name="HomeworksWhatif" id="HomeworksWhatif" value="<%- grade.Homeworks.whatif %>" min="0" max="<%- _course.meta.Homeworks.max %>" />
 
                 <label for="LabsWhatif">Labs Whatif:</label>
-                <input type="range" name="LabsWhatif" id="LabsWhatif" min="0" max="<%- _course.meta.Labs.max %>" />
+                <input type="range" name="LabsWhatif" id="LabsWhatif" value="<%- grade.Labs.whatif %>" min="0" max="<%- _course.meta.Labs.max %>" />
 
                 <label for="ProjectWhatif">Project Whatif:</label>
-                <input type="range" name="ProjectWhatif" id="ProjectWhatif" min="0" max="<%- _course.meta.Project.max %>" />
+                <input type="range" name="ProjectWhatif" id="ProjectWhatif" value="<%- grade.Project.whatif %>" min="0" max="<%- _course.meta.Project.max %>" />
 
                 <label for="PresentationWhatif">Presentation Whatif:</label>
-                <input type="range" name="PresentationWhatif" id="PresentationWhatif" min="0" max="<%- _course.meta.Presentation.max %>" />
+                <input type="range" name="PresentationWhatif" id="PresentationWhatif" value="<%- grade.Presentation.whatif %>" min="0" max="<%- _course.meta.Presentation.max %>" />
 
                 <label for="MidtermWhatif">Midterm Whatif:</label>
-                <input type="range" name="MidtermWhatif" id="MidtermWhatif" min="0" max="<%- _course.meta.Midterm.max %>" />
+                <input type="range" name="MidtermWhatif" id="MidtermWhatif" value="<%- grade.Midterm.whatif %>" min="0" max="<%- _course.meta.Midterm.max %>" />
 
                 <label for="FinalWhatif">Final Whatif:</label>
-                <input type="range" name="FinalWhatif" id="FinalWhatif" min="0" max="<%- _course.meta.Final.max %>" />
+                <input type="range" name="FinalWhatif" id="FinalWhatif" value="<%- grade.Final.whatif %>" min="0" max="<%- _course.meta.Final.max %>" />
 
                 <br/>
                 <button id="calWhatifGradeBtn" data-icon="flat-new" data-theme="b">Calculate what-if grade</button>
