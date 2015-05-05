@@ -20,7 +20,7 @@
     </div><!-- /header -->
     <div data-role="main"  class="ui-content">
         <div id="beforeLoginHome">
-            <h2 class="mc-text-center">Welcome to Grade Factory!</h2>
+            <h2 class="mc-text-center">Welcome to the Grade Factory!</h2>
             <br/>
             <p class="mc-top-margin-1-5"><b>Existing Users</b></p>
             <a href="#login" class="ui-btn ui-btn-e ui-corner-all">Login</a>
@@ -45,9 +45,9 @@
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
         <form id="loginForm">
-            <input type="text" name="email" placeholder="email" required/>
-            <input type="password" name="password" placeholder="password" required/>
-            <button id="loginBtn" data-icon="flat-man" data-theme="b">Login</button>
+            <input type="text" name="email" placeholder="Email" required/>
+            <input type="password" name="password" placeholder="Password" required/>
+            <button id="loginBtn" data-icon="flat-man" data-iconpos="right" data-theme="b">Login</button>
             <!--TODO: error alert dialoge-->
         </form>
     </div><!-- /content -->
@@ -64,24 +64,24 @@
         <form id="signupForm">
             <!--select user type teacher or student-->
             <div data-role="fieldcontain">
-                Choose User Type
+                <label for="select-choice-a">I am a:</label>
                 <select name="userType" id="select-choice-a" data-native-menu="false" data-theme="f">
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
                 </select>
             </div>
 
-            <input type="text" name="email" placeholder="email" required/>
-            <input type="password" name="password" placeholder="password" required/>
-            <input type="password" placeholder="confirm password" required/>
+            <input type="text" name="email" placeholder="Email" required/>
+            <input type="password" name="password" placeholder="Password" required/>
+            <input type="password" placeholder="Confirm Password" required/>
 
-            <input type="text" name="fname" placeholder="first name"/>
-            <input type="text" name="lname" placeholder="last name"/>
-            <input type="number" name="phone" placeholder="phone"/>
+            <input type="text" name="fname" placeholder="First name"/>
+            <input type="text" name="lname" placeholder="Last name"/>
+            <input type="number" name="phone" placeholder="Phone Number"/>
 
-            <input type="number" name="avatarId" min=1 max=15 placeholder="avatar id"/>
+            <input type="number" name="avatarId" min=1 max=15 placeholder="Avatar ID (1-15)"/>
 
-            <button id="signupBtn" data-icon="flat-man" data-theme="b">Sign Up</button>
+            <button id="signupBtn" data-icon="flat-man" data-iconpos="right" data-theme="b">Sign Up</button>
 
             <!--TODO: error alert popup-->
 
