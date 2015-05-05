@@ -318,8 +318,7 @@
 
         <!--if teacher, button to edit/delete course-->
         <button id="editScoreBtn" data-icon="flat-new" data-theme="b">Edit Score</button>
-
-
+        <button id="backToCourseBtn" data-icon="flat-new" data-theme="e">Back to Course</button>
 
         <!--show course fileds-->
         <div id="enrollDetailPanel"></div>
@@ -391,7 +390,7 @@
 
                 <h5>What-if Grade:</h5>
 
-                <!--TODO change to slider, max with meta.XX.max-->
+                <!-- change to slider, max with meta.XX.max-->
 
                 <label for="HomeworksWhatif">Homeworks Whatif:</label>
                 <input type="range" name="HomeworksWhatif" id="HomeworksWhatif" min="0" max="<%- _course.meta.Homeworks.max %>" />
@@ -426,55 +425,63 @@
     </div><!-- /content -->
 </div><!-- /whatifEdit page -->
 
+<!--actualScoreEdit page: teacher edit actual score see grade-->
+<div data-role="page" id="actualScoreEdit">
+    <div data-role="header">
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
+        <h1>Edit Score</h1>
+        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+    </div><!-- /header -->
+    <div data-role="content"  class="ui-content">
 
-<!--test page-->
-<div data-role="page" class="" id="mainPage">
-    <div data-role="header" class="">
-        <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
-        <h1>Grade Factory</h1>
-        <a href="#settingsPage" id='settingsButton' class="ui-btn-right" data-role="button" data-icon="gear">Settings</a>
-    </div>
-    <div data-role="content" class="">
-        <form>
-            <div data-role="fieldcontain">
-                <label for="Points">Points</label>
-                <input type="number" name="points" id="points" data-clear-btn="true" maxlength="3" value="" placeholder="Enter points here">
-            </div>
-            <p style="text-align: center;">
-                <a href="#" id="computeGrade" data-role="button" data-icon="check">Compute Grade</a>
-            </p>
-            <p class="final grade">
-                <label>Final Grade</label>
-                <span id="finalgrade">TBD</span>
-            </p>
-`
-            <p style="text-align: center;">
-                <a href="#" id="testJson" data-role="button" data-icon="check">GET Loc</a>
-            </p>
-            <p class="">
-                <label>Loc::</label>
-                <span id="loc">TBD</span>
-            </p>
+        <!--show this course fileds-->
+        <div id="editActualScorePanel"></div>
+        <!-- BEGIN: courseDetailTmp -->
+        <script type="text/template" id="editAcutalScoreTmp">
+            <h4><%- _course.name %></h4>
+            <h4><%- _student.fname %> <%- _student.lname %></h4>
 
-            <fieldset class="ui-grid-a">
-                <div class="ui-block-a"><button data-icon="flat-settings" data-theme="a">Button A</button></div>
-                <div class="ui-block-b"><button data-icon="flat-new" data-theme="b">Button B</button></div>
-            </fieldset>
-            <fieldset class="ui-grid-a">
-                <div class="ui-block-a"><button data-icon="flat-man" data-theme="c">Button C</button></div>
-                <div class="ui-block-b"><button data-icon="flat-mail" data-theme="d">Button D</button></div>
-            </fieldset>
-            <fieldset class="ui-grid-a">
-                <div class="ui-block-a"><button data-icon="flat-lock" data-theme="e">Button E</button></div>
-                <div class="ui-block-b"><button data-icon="flat-menu" data-theme="f">Button F</button></div>
-            </fieldset>
-            <fieldset class="ui-grid-a">
-                <div class="ui-block-a"><button data-icon="flat-heart" data-theme="g">Button G</button></div>
-            </fieldset>
+            <!--input whatif scores-->
+            <form id="actualScoreForm">
 
-        </form>
-    </div>
-</div><!-- /test page -->
+                <h5>Student Grades:</h5>
+
+                <!-- change to slider, max with meta.XX.max-->
+
+                <label for="HomeworksActual">Homeworks:</label>
+                <input type="range" name="HomeworksActual" id="HomeworksActual" min="0" value="<%- grade.Homeworks.actual %>" max="<%- _course.meta.Homeworks.max %>" />
+
+                <label for="LabsActual">Labs:</label>
+                <input type="range" name="LabsActual" id="LabsActual" value="<%- grade.Labs.actual %>" min="0" max="<%- _course.meta.Labs.max %>" />
+
+                <label for="ProjectActual">Project:</label>
+                <input type="range" name="ProjectActual" id="ProjectActual" value="<%- grade.Project.actual %>" min="0" max="<%- _course.meta.Project.max %>" />
+
+                <label for="PresentationActual">Presentation:</label>
+                <input type="range" name="PresentationActual" id="PresentationActual" value="<%- grade.Presentation.actual %>" min="0" max="<%- _course.meta.Presentation.max %>" />
+
+                <label for="MidtermActual">Midterm:</label>
+                <input type="range" name="MidtermActual" id="MidtermActual" value="<%- grade.Midterm.actual %>" min="0" max="<%- _course.meta.Midterm.max %>" />
+
+                <label for="FinalActual">Final:</label>
+                <input type="range" name="FinalActual" id="FinalActual" value="<%- grade.Final.actual %>" min="0" max="<%- _course.meta.Final.max %>" />
+
+                <br/>
+                <button id="calActualGradeBtn" data-icon="flat-new" data-theme="b">Calculate & Save Grade</button>
+                <!--TODO: error alert dialoge-->
+
+            </form>
+        </script>
+
+
+
+        <!--TODO calculate My total current grade-->
+        <h5>Total Grade: <span id="actualGrade"></span></h5>
+
+    </div><!-- /content -->
+</div><!-- /actualScoreEdit page -->
+
+
 
 <!--setting page-->
 <div data-role="page" class="" id="settingsPage" data-add-back-btn="true" >

@@ -30,6 +30,8 @@
         //enroll a course
         $('#enrollCourseBtn').on('click', enrollCourse);
 
+        //back to courselist
+        $('#backToCourseBtn').on('click', backToCourseDetail);
 
         //delegate click event on course panel, aim to pass courseid
         $('#userCourseList').delegate('.coursePanel', 'click', function () {
@@ -527,21 +529,27 @@
 
             //courseDetail  template
             var studentEnrollDetailTmp = _.template($("script#studentEnrollDetailTmp").html());
-            var studentEnrollData = {};
+            //var studentEnrollData = {};
 
             console.log("load enroll detail for teacher....");
 
-
-            //TODO get enrollData
+            // get enrollData
             //need GET a enroll with id api for teacher to access enroll detail page
             $.getJSON(urlroot+"/enrolls/"+enrollId, function (data) {
+                console.log(data[0]);
+
+                sessionStorage.setItem('tempEnrollData',JSON.stringify(data[0]));
 
                 //load course template, go to coursedetail page
                 //data.enrolls
-                $("#enrollDetailPanel").html(studentEnrollDetailTmp(data));
+                $("#enrollDetailPanel").html(studentEnrollDetailTmp(data[0]));
 
                 //!!apply styles after dynamically adding element
                 $("#enrollDetailPanel").trigger('create');
+
+                //edit actual score
+                //!!!render in template, events after loading template
+                $('#editScoreBtn').on('click', goEditScorePage);
 
             });
 
@@ -684,6 +692,7 @@
 
     };
 
+    //get whatif inputs and build inputs
     var calWhatifGradePre = function (e) {
         e.preventDefault();
         var form = $('#whatifGradeForm');
@@ -712,10 +721,26 @@
 
         console.log(whatifgrade);
 
-        var grade = calWhatifGrade(whatifgrade);
+        // post whatif grade
+        $.ajax({
+            type: 'PUT',
+            data: JSON.stringify(whatifgrade),
+            contentType: "application/json",
+            url: urlroot+"/enrolls/"+tempEnrollData._id,
+            success: function (data) {
+                console.log(data);
 
-        $('#whatifGrade').html(grade);
+                //TODO might need to update the other views
+                prepareUserPages(currentUser);
+                prepareEnrollList(data.enroll._course);
 
+                var grade = calWhatifGrade(whatifgrade);
+                $('#whatifGrade').html(grade);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
     };
 
     var calWhatifGrade = function (whatifgrade) {
@@ -745,8 +770,115 @@
             return 'D';
         }
 
-    }
+    };
 
+    //prepare and go to edit score page
+    var goEditScorePage = function () {
+        //get enroll with enrollid
+        tempEnrollData = JSON.parse(sessionStorage.getItem("tempEnrollData"));
+        console.log(tempEnrollData);
+
+        var editAcutalScoreTmp = _.template($("script#editAcutalScoreTmp").html());
+        $("#editActualScorePanel").html(editAcutalScoreTmp(tempEnrollData));
+        //!!apply styles after dynamically adding element
+        $("#editActualScorePanel").trigger('create');
+
+        //calculte whatif grade
+        $('#calActualGradeBtn').on('click', calActualGradePre);
+
+        $.mobile.changePage($('#actualScoreEdit'), 'slide', true, true);
+    };
+
+
+    //get whatif inputs and build inputs
+    var calActualGradePre = function (e) {
+        e.preventDefault();
+        var form = $('#actualScoreForm');
+        console.log(form);
+
+        //collect user input
+        var actualGrade = {};
+        var Homeworks = {};
+        Homeworks.actual = form.find('input[name="HomeworksActual"]').val();
+        var Labs = {};
+        Labs.actual = form.find('input[name="LabsActual"]').val();
+        var Project = {};
+        Project.actual = form.find('input[name="ProjectActual"]').val();
+        var Presentation = {};
+        Presentation.actual = form.find('input[name="PresentationActual"]').val();
+        var Midterm = {};
+        Midterm.actual = form.find('input[name="MidtermActual"]').val();
+        var Final = {};
+        Final.actual = form.find('input[name="FinalActual"]').val();
+        actualGrade.Homeworks = Homeworks;
+        actualGrade.Labs = Labs;
+        actualGrade.Project = Project;
+        actualGrade.Presentation = Presentation;
+        actualGrade.Midterm = Midterm;
+        actualGrade.Final = Final;
+
+        console.log(actualGrade);
+        var grade = {};
+        grade.grade = actualGrade;
+
+        // post actual grade
+        $.ajax({
+            type: 'PUT',
+            data: JSON.stringify(grade),
+            contentType: "application/json",
+            url: urlroot+"/enrolls/"+tempEnrollData._id,
+            success: function (data) {
+                console.log(data);
+
+                //TODO might need to update the other views
+                prepareEnrollList(data.enroll._course);
+                prepareEnrollDetailPage(data.enroll._id);
+
+                var grade = calActualGrade(actualGrade);
+                $('#actualGrade').html(grade);
+                $.mobile.changePage($('#enrollDetail'), 'slide', true, true);
+            },
+            error: function(err){
+                console.log(err);
+            }
+
+        });
+
+    };
+
+    var calActualGrade = function (actualGrade) {
+        //get current enroll data
+        console.log(tempEnrollData);
+
+        //calculate score based on meta
+        var meta = tempEnrollData._course.meta;
+        var hwscore = actualGrade.Homeworks.actual/meta.Homeworks.max * meta.Homeworks.factor;
+        var labscore = actualGrade.Labs.actual/meta.Labs.max * meta.Labs.factor;
+        var projectscore = actualGrade.Project.actual/meta.Project.max * meta.Project.factor;
+        var presentationscore = actualGrade.Presentation.actual/meta.Presentation.max * meta.Presentation.factor;
+        var midtermscore = actualGrade.Midterm.actual/meta.Midterm.max * meta.Midterm.factor;
+        var finalscore = actualGrade.Final.actual/meta.Final.max * meta.Final.factor;
+
+        var totalScore = hwscore + labscore + projectscore+ presentationscore+ midtermscore + finalscore;
+
+        //match policy
+        var policy = tempEnrollData._course.policy;
+        if(totalScore >= policy.A) {
+            return 'A';
+        } else if(totalScore >= policy.B) {
+            return 'B';
+        } else if(totalScore >= policy.C) {
+            return 'C';
+        } else {
+            return 'D';
+        }
+
+    };
+
+
+    var backToCourseDetail = function () {
+        $.mobile.changePage($('#courseDetail'), 'slide', true, true);
+    };
 }
 
 
