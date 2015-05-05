@@ -15,7 +15,6 @@
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
         $('#cancelSettings').on('click', cancelSettings);
-        $('#testJson').on('click', getlocJson);
 
         //login button handler
         $('#loginBtn').on('click', login);
@@ -108,7 +107,6 @@
 
     });
 
-
     // Load plugin
     $( document ).on( "deviceready", function(){
         //StatusBar.overlaysWebView( false );
@@ -143,27 +141,6 @@
         localStorage.clear();
     };
 
-    //test function
-    var getlocJson = function () {
-        $.ajax({
-            method: "POST",
-            dataType: "application/x-www-form-urlencoded",
-            url: "http://localhost:3000/users/login",
-            data:"email=ddd@ddd.com&password=whatever",
-            success: function(data){
-                console.log(data);
-            },
-            error: function(err){
-                console.log(err);
-            }
-        });
-        //$.getJSON('https://maps.googleapis.com/maps/api/geocode/json?address=san jose', function (data) {
-        //    console.log(data);
-        //
-        //    $('#loc').text(data.results[0].formatted_address);
-        //})
-    };
-
     var login = function (e) {
         e.preventDefault();
 
@@ -191,7 +168,9 @@
             error: function(err){
                 console.log("login failed");
                 console.log(err.responseText);
-                //TODO, login error, show alert dialog
+                // login error, show alert dialog
+                //TODO using JQM dialog or popup
+                alert("Login failed!");
             }
         });
     };
@@ -211,9 +190,11 @@
                 $('#landingHomeIcon').hide();
             },
             error: function(err){
-                console.log("login failed");
+                console.log("logout failed");
                 console.log(err.responseText);
-                //TODO, login error, show alert dialog
+                //logout error, show alert dialog
+                //TODO using JQM dialog or popup
+                alert("Logout failed");
             }
         });
     };
@@ -250,8 +231,11 @@
             error: function(err){
                 console.log("signup failed");
                 console.log(err.responseText);
-                //TODO, signup error, show alert dialog
+                //TODO using JQM dialog or popup
+                //$.mobile.changePage("#singUpAlert", {role: 'dialog'});
+                alert("Signup failed");
             }
+
         });
     };
 
@@ -509,7 +493,6 @@
 
         //!!apply styles after dynamically adding element
         $("#courseDetailPanel").trigger('create');
-
 
     };
 
