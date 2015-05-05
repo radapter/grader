@@ -6,7 +6,7 @@
     var allCoursesList= {};
     var userCourseList= {};
     var tempEnrollData = {};
-    var urlroot = "https://grader-cmpe235.herokuapp.com/";
+    var urlroot = "https://grader-cmpe235.herokuapp.com";
 
     // Setup the event handlers
     $( document ).on( "ready", function()
