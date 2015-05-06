@@ -200,7 +200,7 @@
 
         <!--go to enrollCourse page, show when user is a student-->
         <!--<a href="#enrollCourse" id="goEnrollCourseBtn" class="ui-btn ui-btn-e ui-corner-all">Enroll Courses</a>-->
-        <button id="goEnrollCourseBtn" data-icon="flat-eye" data-theme="b">Enroll Courses</button>
+        <button id="goEnrollCourseBtn" data-theme="b">Enroll In Courses</button>
 
         <!--go to createCourse page, show when user is a teacher-->
         <a href="#createCourse" id="gocCreateCourseBtn" class="ui-btn ui-btn-e ui-corner-all">Create A Course</a>
@@ -254,8 +254,13 @@
 <div data-role="page" id="enrollCourse">
     <div data-role="header">
         <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
-        <h1>Enroll a Class</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <h1>Enroll In a Class</h1>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Grade Factory Home</a></li>
+            <li><a href="#userhome">My Home</a></li>
+            <li><a href="#home" class="logoutBtn">Logout</a></li>
+        </ul>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
         
@@ -282,6 +287,7 @@
             </div>
         </script>
         <!-- END: allEnrollCourseListTmp Underscore Template Definition. -->
+        <p class="no-courses mc-text-center">No courses to enroll in yet.</p>
 
     </div><!-- /content -->
 </div><!-- /enrollCourse page -->
@@ -291,7 +297,12 @@
     <div data-role="header">
         <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
         <h1>Create a Course</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Grade Factory Home</a></li>
+            <li><a href="#userhome">My Home</a></li>
+            <li><a href="#home" class="logoutBtn">Logout</a></li>
+        </ul>
     </div><!-- /header -->
     <div data-role="content" class="ui-content">
 

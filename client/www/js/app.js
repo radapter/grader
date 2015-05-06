@@ -383,10 +383,16 @@
         courseObj.meta = meta;
 
         var policy ={};
-        policy.A = $("input[name=PolicyA]").val();
-        policy.B = $("input[name=PolicyB]").val();
-        policy.C = $("input[name=PolicyC]").val();
-        policy.D = $("input[name=PolicyD]").val();
+        policy.AMax = $("input#range-a-max").val();
+        policy.AMin = $("input#range-a-min").val();
+        policy.BMax = $("input#range-b-max").val();
+        policy.BMin = $("input#range-b-min").val();
+        policy.CMax = $("input#range-c-max").val();
+        policy.CMin = $("input#range-c-min").val();
+        policy.DMax = $("input#range-d-max").val();
+        policy.DMin = $("input#range-d-min").val();
+        policy.FMax = $("input#range-f-max").val();
+        policy.FMin = $("input#range-f-min").val();
 
         courseObj.policy = policy;
 
@@ -464,6 +470,9 @@
             $.getJSON(urlroot+"/enrolls/", function (data) {
                 var userCourseList = data;
                 console.log(userCourseList);
+                if(!userCourseList.length){
+                    $("p.no-courses").show();
+                }
 
                 //save userCourseList in sessionStorage
                 sessionStorage.setItem('userCourseList', JSON.stringify(userCourseList));

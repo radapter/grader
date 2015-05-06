@@ -47,3 +47,7 @@ h4 {
     font-size: larger;
     color: red;
 }
+
+#enrollCourse p.no-courses{
+    display: none;
+}
