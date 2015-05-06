@@ -29,3 +29,15 @@
 #signupForm .form-icon2:after{
     background-color: black;
 }
+
+h4 {
+    margin: 0.5em auto;
+}
+
+#createCourseForm label{
+    width: 50%;
+}
+
+#createCourseForm .ui-field-contain{
+    margin: 1% auto;
+}

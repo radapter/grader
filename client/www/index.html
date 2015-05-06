@@ -20,7 +20,8 @@
         <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
         <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
             <li><a href="#home">Grade Factory Home</a></li>
-            <li><a href="#userhome">My Home</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#signup">Signup</a></li>
         </ul>
     </div><!-- /header -->
 
@@ -35,8 +36,8 @@
             <a href="#signup" class="ui-btn ui-btn-b ui-corner-all">Sign Up</a>
         </div>
         <div id="afterLoginHome">
-            <p class="mc-top-margin-1-5"><b>Want to leave?</b></p>
-            <button id="logoutBtn" data-icon="flat-new" data-theme="b">Logout</button>
+            <p class="mc-top-margin-1-5 mc-text-center"><b>Want to leave?</b></p>
+            <button class="logoutBtn" data-theme="d">Logout</button>
         </div>
 
         <p></p>
@@ -143,6 +144,7 @@
         <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
             <li><a href="#home">Grade Factory Home</a></li>
             <li><a href="#userhome">My Home</a></li>
+            <li><a href="#home" class="logoutBtn">Logout</a></li>
         </ul>
     </div><!-- /header -->
     <div data-role="content" role="main">
@@ -214,11 +216,13 @@
                 <% _.each(courses, function(course){ %>
 
                 <!--TODO should have button in each item to check course info, see what if grade-->
-                <div class="coursePanel" id="<%- course._id %>" data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
+                <div class="coursePanel" id="<%- course._id %>" data-role="collapsible" data-collapsed-icon="flat-time"
+                     data-expanded-icon="flat-cross" data-collapsed="true">
                     <h3><%- course.name %></h3>
                     <p><%- course.description %></p>
                     <!--<button id="goCourseDetailBtn" data-icon="flat-eye" data-theme="f">Course Detail</button>-->
-                    <!--<a href="#courseDetail?courseId=<%- course._id %>" class="ui-btn ui-btn-b ui-corner-all" >Course Detail</a>-->
+                    <!--<a href="#courseDetail?courseId=<%- course._id %>" class="ui-btn ui-btn-b ui-corner-all" >
+                        Course Detail</a>-->
                 </div>
                 <% }); %>
             </div>
@@ -232,7 +236,8 @@
                 <% _.each(enrolls, function(enroll){ %>
 
                 <!--TODO should have button in each item to check course info-->
-                <div class="coursePanel" id="<%- enroll._id %>" data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
+                <div class="coursePanel" id="<%- enroll._id %>" data-role="collapsible" data-collapsed-icon="flat-time"
+                     data-expanded-icon="flat-cross" data-collapsed="true">
                     <h3><%- enroll._course.name %></h3>
                     <p><%- enroll._course.description %></p>
                 </div>
@@ -265,11 +270,13 @@
                 <% _.each(courses, function(course){ %>
 
                 <!--TODO should have button in each item to check course info, see what if grade-->
-                <div class="coursePanel" id="<%- course._id %>" data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="true">
+                <div class="coursePanel" id="<%- course._id %>" data-role="collapsible" data-collapsed-icon="flat-time"
+                     data-expanded-icon="flat-cross" data-collapsed="true">
                     <h3><%- course.name %></h3>
                     <p><%- course.description %></p>
                     <!--<button id="goCourseDetailBtn" data-icon="flat-eye" data-theme="f">Course Detail</button>-->
-                    <!--<a href="#courseDetail?courseId=<%- course._id %>" class="ui-btn ui-btn-b ui-corner-all" >Course Detail</a>-->
+                    <!--<a href="#courseDetail?courseId=<%- course._id %>" class="ui-btn ui-btn-b ui-corner-all" >
+                    Course Detail</a>-->
                 </div>
                 <% }); %>
             </div>
@@ -286,57 +293,180 @@
         <h1>Create a Course</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
-    <div data-role="content"  class="ui-content">
+    <div data-role="content" class="ui-content">
 
         <!-- create a course: form fileds as follows-->
         <form id="createCourseForm">
+            <div data-role="collapsible" data-collapsed="false" >
+                <h3>General</h3>
+                <strong>Course Name</strong>
+                <input type="text" name="name" placeholder="CMPE 235" required/>
 
-            Course Name
-            <input type="text" name="name" placeholder="course name" required/>
-            Course Description
-            <textarea name="description" id="" cols="30" rows="10" placeholder="course description"></textarea>
+                <strong>Course Description</strong>
+                <textarea name="description" id="coursedesc" cols="30" rows="10"
+                          placeholder="Mobile systems, RFID, etc"></textarea>
+            </div>
 
-            <h5>Meta:</h5>
-            Homework Max
-            <input type="number" name="HomeworksMax" placeholder="homework max"/>
-            Homework Factor
-            <input type="text" name="HomeworksFactor" placeholder="homework factor"/>
+            <div data-role="collapsible">
+                <h3>Course Metadata</h3>
 
-            Labs Max
-            <input type="number" name="LabsMax" placeholder="Labs max"/>
-            Labs Factor
-            <input type="text" name="LabsFactor" placeholder="Labs factor"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Homework</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="hwkmax">Max Points:</label>
+                                <input type="number" id="hwkmax" name="HomeworksMax" placeholder="500"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="hwkpercent">% (out of 100):</label>
+                                <input type="number" name="HomeworksFactor" id="hwkpercent" placeholder="10"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            Project Max
-            <input type="number" name="ProjectMax" placeholder="Project max"/>
-            Project Factor
-            <input type="text" name="ProjectFactor" placeholder="Project factor"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Labs</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="labmax">Max Points:</label>
+                                <input type="number" id="labmax" name="LabsMax" placeholder="500"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="labpercent">% (out of 100):</label>
+                                <input type="number" name="LabsFactor" id="labpercent" placeholder="40"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            Presentation Max
-            <input type="number" name="PresentationMax" placeholder="Presentation max"/>
-            Presentation Factor
-            <input type="text" name="PresentationFactor" placeholder="Presentation factor"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Project</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="projmax">Max Points:</label>
+                                <input type="number" id="projmax" name="ProjectMax" placeholder="200"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="projpercent">% (out of 100):</label>
+                                <input type="number" name="ProjectFactor" id="projpercent" placeholder="20"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            Midterm Max
-            <input type="number" name="MidtermMax" placeholder="Midterm max"/>
-            Midterm Factor
-            <input type="text" name="MidtermFactor" placeholder="Midterm factor"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Presentation</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="presmax">Max Points:</label>
+                                <input type="number" id="presmax" name="PresentationMax" placeholder="100"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="prespercent">% (out of 100):</label>
+                                <input type="number" name="PresentationFactor" id="prespercent" placeholder="10"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            Final Max
-            <input type="number" name="FinalMax" placeholder="Final max"/>
-            Final Factor
-            <input type="text" name="FinalFactor" placeholder="Final factor"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Midterm</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="mtmax">Max Points:</label>
+                                <input type="number" id="mtmax" name="MidtermMax" placeholder="100"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="mtpercent">% (out of 100):</label>
+                                <input type="number" name="MidtermFactor" id="mtpercent" placeholder="10"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            Policy - A
-            <input type="text" name="PolicyA" placeholder="Policy A"/>
-            Policy - B
-            <input type="text" name="PolicyB" placeholder="Policy B"/>
-            Policy - C
-            <input type="text" name="PolicyC" placeholder="Policy C"/>
-            Policy - D
-            <input type="text" name="PolicyD" placeholder="Policy D"/>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                    <h4>Final</h4>
+                    <div class="ui-grid-a">
+                        <div class="ui-block-a">
+                            <div data-role="fieldcontain">
+                                <label for="finalmax">Max Points:</label>
+                                <input type="number" id="finalmax" name="FinalMax" placeholder="100"/>
+                            </div>
+                        </div>
+                        <div class="ui-block-b">
+                            <div data-role="fieldcontain">
+                                <label for="finalpercent">% (out of 100):</label>
+                                <input type="number" name="FinalFactor" id="finalpercent" placeholder="10"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <button id="createCourseBtn" data-icon="flat-new" data-theme="b">Create Course</button>
+
+            <div data-role="collapsible" class="cutoffs">
+                <h3>Grading Cutoffs</h3>
+
+                <div data-role="rangeslider" class="slider slider-a">
+                    <label for="range-a-min">Cutoffs for A:</label>
+                    <input name="range-a-min" id="range-a-min" min="0" max="100" value="90" type="range" />
+                    <input name="range-a-max" id="range-a-max" min="0" max="100" value="100" type="range" />
+                </div>
+                <br>
+                <div data-role="rangeslider" class="slider slider-b">
+                    <label for="range-b-min">Cutoffs for B:</label>
+                    <input name="range-b-min" id="range-b-min" min="00" max="100" value="80" type="range" />
+                    <input name="range-b-max" id="range-b-max" min="0" max="100" value="89" type="range" />
+                </div>
+                <br>
+                <div data-role="rangeslider" class="slider slider-c">
+                    <label for="range-c-min">Cutoffs for C:</label>
+                    <input name="range-c-min" id="range-c-min" min="00" max="100" value="70" type="range" />
+                    <input name="range-c-max" id="range-c-max" min="0" max="100" value="79" type="range" />
+                </div>
+                <br>
+                <div data-role="rangeslider" class="slider slider-d">
+                    <label for="range-d-min">Cutoffs for D:</label>
+                    <input name="range-d-min" id="range-d-min" min="0" max="100" value="60" type="range" />
+                    <input name="range-d-max" id="range-d-max" min="0" max="100" value="69" type="range" />
+                </div>
+                <br>
+                <div data-role="rangeslider" class="slider slider-f">
+                    <label for="range-f-min">Cutoffs for F:</label>
+                    <input name="range-f-min" id="range-f-min" min="0" max="100" value="0" type="range"/>
+                    <input name="range-f-max" id="range-f-max" min="0" max="100" value="59" type="range" />
+                </div>
+
+
+                <!--Policy - A
+                <input type="text" name="PolicyA" placeholder="Policy A"/>
+                Policy - B
+                <input type="text" name="PolicyB" placeholder="Policy B"/>
+                Policy - C
+                <input type="text" name="PolicyC" placeholder="Policy C"/>
+                Policy - D
+                <input type="text" name="PolicyD" placeholder="Policy D"/>-->
+            </div>
+
+            <button id="createCourseBtn" data-icon="flat-checkround" data-iconpos="right" data-theme="b">
+                Create Course
+            </button>
             <!--TODO: error alert dialoge-->
 
         </form>

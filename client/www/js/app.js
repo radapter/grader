@@ -6,7 +6,7 @@
     var allCoursesList= {};
     var userCourseList= {};
     var tempEnrollData = {};
-    var urlroot = "https://grader-cmpe235.herokuapp.com";
+    var urlroot = "http://localhost:3000";
 
     // Setup the event handlers
     $( document ).on( "ready", function()
@@ -24,6 +24,56 @@
            $(".nav-dropdown-list").hide();
         });
 
+        //$("#createCourseForm").rangeslider();
+
+
+
+
+        $(document).on('pageinit', '#createCourse' ,function(){
+            //$("div.cutoffs").rangeslider({defaults: true});
+
+            $("#createCourseForm .slider").on("change", function(){
+                //console.log(this);
+                var $this = $(this).closest("div.cutoffs");
+                var aMin = $this.find("#range-a-min").val();
+                var bMax = $this.find("#range-b-max").val();
+                var bMin = $this.find("#range-b-min").val();
+                var cMax = $this.find("#range-c-max").val();
+                var cMin = $this.find("#range-c-min").val();
+                var dMax = $this.find("#range-d-max").val();
+                var dMin = $this.find("#range-d-min").val();
+                var fMax = $this.find("#range-f-max").val();
+
+                if($(this).hasClass("slider-a")){
+                    $this.find("#range-b-max").rangeslider().val(parseInt(aMin)-1)
+                    //$this.find("#range-b-max").rangeslider("refresh");
+                    //console.log("need to update slider b");
+                }
+                else if ($(this).hasClass("slider-b")){
+                    $this.find("#range-a-min").val(parseInt(bMax)+1);
+                    $this.find("#range-c-max").val(parseInt(bMin)-1);
+                    //console.log("need to update slider c or a");
+                }
+                else if ($(this).hasClass("slider-c")){
+                    //console.log("update slider d or b");
+                    $this.find("#range-b-min").val(parseInt(cMax)+1);
+                    $this.find("#range-c-max").val(parseInt(cMin)-1);
+                }
+                else if ($(this).hasClass("slider-d")){
+                    //console.log("update slider c or f");
+                    $this.find("#range-c-min").val(parseInt(dMax)+1);
+                    $this.find("#range-f-max").val(parseInt(dMin)-1);
+                }
+                else if ($(this).hasClass("slider-f")){
+                    //console.log("update slider d");
+                    $this.find("#range-d-min").val(parseInt(fMax)+1);
+                }
+
+                //$this.rangeslider().rangeslider("refresh");
+
+            });
+        });
+
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
         $('#cancelSettings').on('click', cancelSettings);
@@ -31,7 +81,7 @@
         //login button handler
         $('#loginBtn').on('click', login);
         //logout button handler
-        $('#logoutBtn').on('click', logout);
+        $('.logoutBtn').on('click', logout);
         //signup button handler
         $('#signupBtn').on('click', signup);
         //create a course
