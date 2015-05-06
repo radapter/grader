@@ -14,17 +14,24 @@
 <!--landing page-->
 <div data-role="page" id="home">
     <div data-role="header">
-        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home" id="landingHomeIcon">Home</a>
+        <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man"
+           title="Home" id="landingHomeIcon">Home</a>
         <h1>Grade Factory</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Grade Factory Home</a></li>
+            <li><a href="#userhome">My Home</a></li>
+        </ul>
     </div><!-- /header -->
-    <div data-role="main"  class="ui-content">
+
+    <div data-role="main" class="ui-content">
         <div id="beforeLoginHome">
             <h2 class="mc-text-center">Welcome to the Grade Factory!</h2>
-            <br/>
-            <p class="mc-top-margin-1-5"><b>Existing Users</b></p>
+            <br><br>
+            <p class="mc-top-margin-1-5 mc-text-center"><b>Existing Users</b></p>
             <a href="#login" class="ui-btn ui-btn-e ui-corner-all">Login</a>
-            <p class="mc-top-margin-1-5"><b>Don't have an account?</b></p>
+            <br>
+            <p class="mc-top-margin-1-5 mc-text-center"><b>Don't have an account?</b></p>
             <a href="#signup" class="ui-btn ui-btn-b ui-corner-all">Sign Up</a>
         </div>
         <div id="afterLoginHome">
@@ -41,13 +48,25 @@
     <div data-role="header">
         <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
         <h1>Login</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#signup">Signup</a></li>
+        </ul>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
         <form id="loginForm">
-            <input type="text" name="email" placeholder="Email" required/>
-            <input type="password" name="password" placeholder="Password" required/>
-            <button id="loginBtn" data-icon="flat-man" data-iconpos="right" data-theme="b">Login</button>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-mail ui-icon-shadow form-icon"></span>
+                <input type="text" name="email" placeholder="Email" required/>
+            </div>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-lock ui-icon-shadow form-icon">&nbsp;</span>
+                <input type="password" name="password" placeholder="Password" required/>
+            </div>
+
+            <button id="loginBtn" data-theme="b">Login</button>
             <!--TODO: error alert dialoge-->
         </form>
     </div><!-- /content -->
@@ -58,7 +77,12 @@
     <div data-role="header">
         <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
         <h1>Sign Up</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#signup">Signup</a></li>
+        </ul>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
         <form id="signupForm">
@@ -70,18 +94,38 @@
                     <option value="teacher">Teacher</option>
                 </select>
             </div>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-mail ui-icon-shadow form-icon"></span>
+                <input type="text" name="email" placeholder="Email" required/>
+            </div>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-lock ui-icon-shadow form-icon">&nbsp;</span>
+                <input type="password" name="password" placeholder="Password" required/>
+            </div>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-lock ui-icon-shadow form-icon">&nbsp;</span>
+                <input type="password" name="password2" placeholder="Confirm Password" required/>
+            </div>
+            <div class="fieldcontain">
+                <span class="ui-btn-icon-notext ui-icon-info form-icon2"></span>
+                <input type="text" name="fname" placeholder="First name"/>
+            </div>
+            <div class="fieldcontain">
+                <span class="ui-btn-icon-notext ui-icon-info form-icon2"></span>
+                <input type="text" name="lname" placeholder="Last name"/>
+            </div>
 
-            <input type="text" name="email" placeholder="Email" required/>
-            <input type="password" name="password" placeholder="Password" required/>
-            <input type="password" placeholder="Confirm Password" required/>
+            <div class="fieldcontain">
+                <span class="ui-btn-icon-notext ui-icon-phone form-icon2"></span>
+                <input type="number" name="phone" placeholder="Phone Number"/>
+            </div>
 
-            <input type="text" name="fname" placeholder="First name"/>
-            <input type="text" name="lname" placeholder="Last name"/>
-            <input type="number" name="phone" placeholder="Phone Number"/>
+            <div class="fieldcontain">
+                <span class="ui-icon ui-icon-flat-man ui-icon-shadow form-icon">&nbsp;</span>
+                <input type="number" name="avatarId" min=1 max=15 placeholder="Avatar ID (1-15)"/>
+            </div>
 
-            <input type="number" name="avatarId" min=1 max=15 placeholder="Avatar ID (1-15)"/>
-
-            <button id="signupBtn" data-icon="flat-man" data-iconpos="right" data-theme="b">Sign Up</button>
+            <button id="signupBtn" data-theme="b">Sign Up</button>
 
             <!--TODO: error alert popup-->
 
@@ -94,21 +138,61 @@
     <div data-role="header">
         <a data-iconpos="notext" href="#home" data-role="button" data-icon="home" title="Home">Home</a>
         <!--insert user firstname here-->
-        <h1><span id="userFname"></span> Home</h1>
-        <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
+        <h1><span id="userFname"></span>'s Home</h1>
+        <button class="nav-dropdown" data-iconpos="notext" data-icon="flat-menu"></button>
+        <ul class="nav-dropdown-list" data-role="listview" data-theme="c">
+            <li><a href="#home">Grade Factory Home</a></li>
+            <li><a href="#userhome">My Home</a></li>
+        </ul>
     </div><!-- /header -->
     <div data-role="content" role="main">
-
         <!--user profile panel-->
         <div id="userProfilePanel"></div>
 
         <!-- BEGIN: userProfileTmp: for teacher - Underscore Template Definition. -->
         <script type="text/template" id="userProfileTmp">
-            <img src="<%- avatarUrl %>" alt="" height="60"/>
-            <h4><%- fname %> <%- lname %></h4>
-            <h4>Emai: <%- email %></h4>
-            <h4>Phone: <%- phone %> </h4>
-            <h4><%- userType %>: <%- userId %> </h4>
+            <img src="<%- avatarUrl %>" alt="user avatar" height="60"/>
+
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h4>Name:</h4>
+                </div>
+                <div class="ui-block-b">
+                    <h4><%- fname %> <%- lname %></h4>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h4>Email:</h4>
+                </div>
+                <div class="ui-block-b">
+                    <h4><%- email %></h4>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h4>Phone:</h4>
+                </div>
+                <div class="ui-block-b">
+                    <h4><%- phone %></h4>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h4>Your Role:</h4>
+                </div>
+                <div class="ui-block-b">
+                    <h4><%- userType %></h4>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h4>Your ID:</h4>
+                </div>
+                <div class="ui-block-b">
+                    <h4><%- userId %></h4>
+                </div>
+            </div>
         </script>
         <!-- END: userProfileTmp Underscore Template Definition. -->
 

@@ -12,6 +12,18 @@
     $( document ).on( "ready", function()
     {
         //sessionStorage.clear();
+        $(".nav-dropdown").on("click", function(){
+           $(".nav-dropdown-list").toggle();
+        });
+
+        $(".nav-dropdown-list").on("click", function(){
+           $(this).closest(".nav-dropdown-list").toggle();
+        });
+
+        $("a").click(function(){
+           $(".nav-dropdown-list").hide();
+        });
+
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
         $('#cancelSettings').on('click', cancelSettings);

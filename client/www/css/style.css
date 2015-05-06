@@ -1,0 +1,31 @@
+.nav-dropdown-list {
+    display: none;
+}
+
+.mc-text-center{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.form-icon {
+    position: absolute;
+    width: 50px;
+    height: 80px;
+    right: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.form-icon2{
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    right: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#signupForm .form-icon2:after{
+    background-color: black;
+}
