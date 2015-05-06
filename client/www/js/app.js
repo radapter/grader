@@ -32,8 +32,8 @@
         $(document).on('pageinit', '#createCourse' ,function(){
             //$("div.cutoffs").rangeslider({defaults: true});
 
-            $("#createCourseForm .slider").on("change", function(){
-                //console.log(this);
+            $("#createCourseForm .slider input").on("change", function(){
+                console.log(this.id);
                 var $this = $(this).closest("div.cutoffs");
                 var aMin = $this.find("#range-a-min").val();
                 var bMax = $this.find("#range-b-max").val();
@@ -44,33 +44,42 @@
                 var dMin = $this.find("#range-d-min").val();
                 var fMax = $this.find("#range-f-max").val();
 
-                if($(this).hasClass("slider-a")){
-                    $this.find("#range-b-max").rangeslider().val(parseInt(aMin)-1)
-                    //$this.find("#range-b-max").rangeslider("refresh");
-                    //console.log("need to update slider b");
+                if(this.id == "range-a-min"){
+                    $this.find("#range-b-max").val(parseInt(aMin)-1)
+                    $this.find("#range-b-max").slider("refresh");
                 }
-                else if ($(this).hasClass("slider-b")){
+                else if (this.id == "range-b-max"){
                     $this.find("#range-a-min").val(parseInt(bMax)+1);
+                    //$this.find("#range-a-min").slider("refresh");
+                }
+
+                if (this.id == "range-b-min"){
                     $this.find("#range-c-max").val(parseInt(bMin)-1);
-                    //console.log("need to update slider c or a");
+                    $this.find("#range-c-max").slider("refresh");
                 }
-                else if ($(this).hasClass("slider-c")){
-                    //console.log("update slider d or b");
-                    $this.find("#range-b-min").val(parseInt(cMax)+1);
-                    $this.find("#range-c-max").val(parseInt(cMin)-1);
+                else if (this.id == "range-c-max") {
+                    $this.find("#range-b-min").val(parseInt(cMax) + 1);
+                    //$this.find("#range-b-min").slider("refresh");
                 }
-                else if ($(this).hasClass("slider-d")){
-                    //console.log("update slider c or f");
+
+                if (this.id == "range-c-min"){
+                    $this.find("#range-d-max").val(parseInt(cMin)-1);
+                    $this.find("#range-d-max").slider("refresh");
+                }
+                else if (this.id == "range-d-max"){
                     $this.find("#range-c-min").val(parseInt(dMax)+1);
+                    //$this.find("#range-c-min").slider("refresh");
+                }
+
+
+                if (this.id == "range-d-min"){
                     $this.find("#range-f-max").val(parseInt(dMin)-1);
+                    $this.find("#range-f-max").slider("refresh");
                 }
-                else if ($(this).hasClass("slider-f")){
-                    //console.log("update slider d");
+                else if (this.id == "range-f-max"){
                     $this.find("#range-d-min").val(parseInt(fMax)+1);
+                    //$this.find("#range-d-min").slider("refresh");
                 }
-
-                //$this.rangeslider().rangeslider("refresh");
-
             });
         });
 
