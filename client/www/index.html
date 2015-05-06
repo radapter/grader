@@ -304,11 +304,15 @@
 
                 <strong>Course Description</strong>
                 <textarea name="description" id="coursedesc" cols="30" rows="10"
-                          placeholder="Mobile systems, RFID, etc"></textarea>
+                          placeholder="Mobile systems, RFID, etc" required></textarea>
             </div>
 
-            <div data-role="collapsible">
+            <div data-role="collapsible" class="course-meta">
                 <h3>Course Metadata</h3>
+
+                <h4>Total Course Percentage: <span id="total-percent">0</span>%</h4>
+                <p class="percent-error">
+                    ERROR: Your total percentage does not sum to 100%. Please adjust to correct it.</p>
 
                 <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
                     <h4>Homework</h4>
@@ -316,13 +320,14 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="hwkmax">Max Points:</label>
-                                <input type="number" id="hwkmax" name="HomeworksMax" placeholder="500"/>
+                                <input type="number" id="hwkmax" name="HomeworksMax" placeholder="500" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="hwkpercent">% (out of 100):</label>
-                                <input type="number" name="HomeworksFactor" id="hwkpercent" placeholder="10"/>
+                                <input type="number" name="HomeworksFactor" class="percent" id="hwkpercent"
+                                       placeholder="10" required/>
                             </div>
                         </div>
                     </div>
@@ -334,13 +339,14 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="labmax">Max Points:</label>
-                                <input type="number" id="labmax" name="LabsMax" placeholder="500"/>
+                                <input type="number" id="labmax" name="LabsMax" placeholder="500" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="labpercent">% (out of 100):</label>
-                                <input type="number" name="LabsFactor" id="labpercent" placeholder="40"/>
+                                <input type="number" name="LabsFactor" class="percent" id="labpercent"
+                                       placeholder="40" required/>
                             </div>
                         </div>
                     </div>
@@ -352,13 +358,14 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="projmax">Max Points:</label>
-                                <input type="number" id="projmax" name="ProjectMax" placeholder="200"/>
+                                <input type="number" id="projmax" name="ProjectMax" placeholder="200" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="projpercent">% (out of 100):</label>
-                                <input type="number" name="ProjectFactor" id="projpercent" placeholder="20"/>
+                                <input type="number" name="ProjectFactor" class="percent" id="projpercent"
+                                       placeholder="20" required/>
                             </div>
                         </div>
                     </div>
@@ -370,13 +377,14 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="presmax">Max Points:</label>
-                                <input type="number" id="presmax" name="PresentationMax" placeholder="100"/>
+                                <input type="number" id="presmax" name="PresentationMax" placeholder="100" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="prespercent">% (out of 100):</label>
-                                <input type="number" name="PresentationFactor" id="prespercent" placeholder="10"/>
+                                <input type="number" name="PresentationFactor" class="percent" id="prespercent"
+                                       placeholder="10" required/>
                             </div>
                         </div>
                     </div>
@@ -388,13 +396,14 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="mtmax">Max Points:</label>
-                                <input type="number" id="mtmax" name="MidtermMax" placeholder="100"/>
+                                <input type="number" id="mtmax" name="MidtermMax" placeholder="100" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="mtpercent">% (out of 100):</label>
-                                <input type="number" name="MidtermFactor" id="mtpercent" placeholder="10"/>
+                                <input type="number" name="MidtermFactor" class="percent" id="mtpercent"
+                                       placeholder="10" required/>
                             </div>
                         </div>
                     </div>
@@ -406,19 +415,22 @@
                         <div class="ui-block-a">
                             <div data-role="fieldcontain">
                                 <label for="finalmax">Max Points:</label>
-                                <input type="number" id="finalmax" name="FinalMax" placeholder="100"/>
+                                <input type="number" id="finalmax" name="FinalMax" placeholder="100" required/>
                             </div>
                         </div>
                         <div class="ui-block-b">
                             <div data-role="fieldcontain">
                                 <label for="finalpercent">% (out of 100):</label>
-                                <input type="number" name="FinalFactor" id="finalpercent" placeholder="10"/>
+                                <input type="number" name="FinalFactor" class="percent" id="finalpercent"
+                                       placeholder="10" required/>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <p class="percent-error">
+                    ERROR: Your total percentage does not sum to 100%. Please adjust to correct it.</p>
+            </div>
 
             <div data-role="collapsible" class="cutoffs">
                 <h3>Grading Cutoffs</h3>

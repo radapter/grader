@@ -41,3 +41,9 @@ h4 {
 #createCourseForm .ui-field-contain{
     margin: 1% auto;
 }
+
+#createCourseForm p.percent-error{
+    display: none;
+    font-size: larger;
+    color: red;
+}

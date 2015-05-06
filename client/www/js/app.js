@@ -32,8 +32,9 @@
         $(document).on('pageinit', '#createCourse' ,function(){
             //$("div.cutoffs").rangeslider({defaults: true});
 
+
             $("#createCourseForm .slider input").on("change", function(){
-                console.log(this.id);
+                //console.log(this.id);
                 var $this = $(this).closest("div.cutoffs");
                 var aMin = $this.find("#range-a-min").val();
                 var bMax = $this.find("#range-b-max").val();
@@ -71,7 +72,6 @@
                     //$this.find("#range-c-min").slider("refresh");
                 }
 
-
                 if (this.id == "range-d-min"){
                     $this.find("#range-f-max").val(parseInt(dMin)-1);
                     $this.find("#range-f-max").slider("refresh");
@@ -81,6 +81,38 @@
                     //$this.find("#range-d-min").slider("refresh");
                 }
             });
+
+            $("#createCourseForm input.percent").on("change", function(){
+                var totalPercent = 0;
+                $("#createCourseForm input.percent").each(function(){
+                    if($(this).val().length){
+                        //console.log($(this).id + ": " + $(this).val());
+                        totalPercent += parseInt($(this).val());
+                        console.log("totalPercent is: " + totalPercent);
+                        $("span#total-percent").html(totalPercent);
+                    }
+                });
+
+                $("#createCourseForm input.percent").blur(function(){
+                    //check that not all are empty
+                    var empty = $(this).closest("div.course-meta").find("input.percent").filter(function() {
+                        return $(this).val().length === 0;
+                    });
+                    if(!empty.length) {
+                        if(totalPercent != 100){
+                            console.log("total percent does not add up to 100");
+                            $("span#total-percent").css("color","red");
+                            $("p.percent-error").show();
+                        }
+                        else{
+                            $("span#total-percent").css("color","black");
+                            $("p.percent-error").hide();
+                        }
+                    }
+                });
+            });
+
+
         });
 
         $('#computeGrade').on('click', computeGrade);
