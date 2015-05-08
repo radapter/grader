@@ -27,8 +27,6 @@
         //$("#createCourseForm").rangeslider();
 
 
-
-
         $(document).on('pageshow', '#createCourse' ,function(){
             //$("div.cutoffs").rangeslider({defaults: true});
             changeSliders();
@@ -77,6 +75,53 @@
                calculateGrade();
             });
         })
+
+        $(document).on('pageshow', '#enrollDetail', function(){
+            var enrollid = $("button#whatifBtn").data("enrollid");
+
+            //get enroll with enrollid
+            console.log(enrollid);
+            tempEnrollData = JSON.parse(sessionStorage.getItem("tempEnrollData"));
+            console.log(tempEnrollData);
+
+
+            var totalScore = 0;
+            for(var section in tempEnrollData.grade){
+                var sectMax = tempEnrollData._course.meta[section].max;
+                var factor = tempEnrollData._course.meta[section].factor;
+                var score = tempEnrollData.grade[section].actual;
+
+                console.log(section, sectMax, factor, score);
+                totalScore += (score/sectMax)*factor;
+                console.log(totalScore);
+            }
+
+            $("span.grade-value").html(totalScore.toFixed(1));
+
+            var letterGrade = '';
+            var aMin = tempEnrollData._course.policy.A;
+            var bMin = tempEnrollData._course.policy.B;
+            var cMin = tempEnrollData._course.policy.C;
+            var dMin = tempEnrollData._course.policy.D;
+            if(totalScore >= aMin){
+                letterGrade = 'A';
+            }
+            else if (totalScore >= bMin){
+                letterGrade = 'B';
+            }
+            else if (totalScore >= cMin){
+                letterGrade = 'C';
+            }
+            else if (totalScore >= dMin){
+                letterGrade = 'D';
+            }
+            else{
+                letterGrade = 'F';
+            }
+
+            $("span.letter-grade").html(letterGrade);
+
+        });
 
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
