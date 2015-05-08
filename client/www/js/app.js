@@ -69,13 +69,17 @@
             changeSlidersEdit();
         });
 
+        $(document).on('pageshow', '#enrollDetail', function(){
+            calculateGrade();
+        });
+
         $(document).on('pageshow', '#actualScoreEdit', function(){
             calculateGrade();
             $("input").change(function(){
                 //console.log("here");
                calculateGrade();
             });
-        })
+        });
 
         $(document).on('pageshow', '#enrollDetail', function(){
             var enrollid = $("button#whatifBtn").data("enrollid");
@@ -84,7 +88,6 @@
             console.log(enrollid);
             tempEnrollData = JSON.parse(sessionStorage.getItem("tempEnrollData"));
             console.log(tempEnrollData);
-
 
             var totalScore = 0;
             for(var section in tempEnrollData.grade){
@@ -121,6 +124,14 @@
             }
 
             $("span.letter-grade").html(letterGrade);
+
+        });
+
+        $(document).on('pageshow', '#whatifEdit', function(){
+            recalcGrade();
+            $("input").change(function(){
+               recalcGrade();
+            });
 
         });
 
@@ -225,6 +236,94 @@
         //StatusBar.backgroundColorByName("gray");
     });
 
+
+    var recalcGrade = function(){
+        var form = $("form#whatifGradeForm");
+
+        //collect user input
+        var actualGrade = {};
+        var Homeworks = {};
+        var totalScore = 0;
+        Homeworks.whatif = form.find('input[name="HomeworksWhatif"]').val();
+        Homeworks.max = form.find('input[name="HomeworksWhatif"]').prop('max');
+        Homeworks.factor = form.find('input#HomeworksFactor').val();
+        //console.log(Homeworks);
+        totalScore += (Homeworks.whatif/Homeworks.max)*(Homeworks.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Labs = {};
+        Labs.whatif = form.find('input[name="LabsWhatif"]').val();
+        Labs.max = form.find('input[name="LabsWhatif"]').prop('max');
+        Labs.factor = form.find('input#LabsFactor').val();
+        totalScore += (Labs.whatif/Labs.max)*(Labs.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Project = {};
+        Project.whatif = form.find('input[name="ProjectWhatif"]').val();
+        Project.max = form.find('input[name="ProjectWhatif"]').prop('max');
+        Project.factor = form.find('input#ProjectFactor').val();
+        totalScore += (Project.whatif/Project.max)*(Project.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Presentation = {};
+        Presentation.whatif = form.find('input[name="PresentationWhatif"]').val();
+        Presentation.max = form.find('input[name="PresentationWhatif"]').prop('max');
+        Presentation.factor = form.find('input#PresentationFactor').val();
+        totalScore += (Presentation.whatif/Presentation.max)*(Presentation.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Midterm = {};
+        Midterm.whatif = form.find('input[name="MidtermWhatif"]').val();
+        Midterm.max = form.find('input[name="MidtermWhatif"]').prop('max');
+        Midterm.factor = form.find('input#MidtermFactor').val();
+        totalScore += (Midterm.whatif/Midterm.max)*(Midterm.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Final = {};
+        Final.whatif = form.find('input[name="FinalWhatif"]').val();
+        Final.max = form.find('input[name="FinalWhatif"]').prop('max');
+        Final.factor = form.find('input#FinalFactor').val();
+        totalScore += (Final.whatif/Final.max)*(Final.factor);
+        //console.log(totalScore.toFixed(3));
+
+        actualGrade.Homeworks = Homeworks;
+        actualGrade.Labs = Labs;
+        actualGrade.Project = Project;
+        actualGrade.Presentation = Presentation;
+        actualGrade.Midterm = Midterm;
+        actualGrade.Final = Final;
+
+        //console.log(actualGrade);
+        //console.log(totalScore.toFixed(1));
+
+        $("h1.student-grade span.grade-value").html(totalScore.toFixed(1));
+        var totalGrade = '';
+
+        var scale = $("input#grading-scale");
+        var minA = scale.attr("data-a");
+        var minB = scale.attr("data-b");
+        var minC = scale.attr("data-c");
+        var minD = scale.attr("data-d");
+        console.log(minA, minB, minC, minD);
+        if(totalScore >= minA){
+            totalGrade = "A";
+        }
+        else if(totalScore >= minB){
+            totalGrade = "B";
+        }
+        else if (totalScore >= minC){
+            totalGrade = "C";
+        }
+        else if (totalScore >= minD){
+            totalGrade = "D";
+        }
+        else{
+            totalGrade = "F";
+        }
+
+        $("h1.student-grade span.letter-grade").html(totalGrade);
+
+    }
 
 
     var calculateGrade = function(){

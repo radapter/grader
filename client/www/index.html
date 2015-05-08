@@ -985,7 +985,9 @@
         <script type="text/template" id="studentEnrollDetailTmp">
             <div data-role="collapsible" data-collapsed="false">
                 <h3><%- _student.fname %> <%- _student.lname %></h3>
-                <h3>Grade: <span class="actual-grade"></span></h3>
+                <h3>Grade: <span class="grade-value"></span>%
+                    (<span class="letter-grade"></span>)
+                </h3>
 
                 <table data-role="table" class="table-breakpoint">
                     <thead>
@@ -1034,7 +1036,7 @@
 <div data-role="page" id="whatifEdit">
     <div data-role="header">
         <a data-iconpos="notext" href="#userhome" data-role="button" data-icon="flat-man" title="Home">Home</a>
-        <h1>What-if Score</h1>
+        <h1>What If Score</h1>
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
@@ -1045,35 +1047,65 @@
         <div id="enrollCoursePanel"></div>
         <!-- BEGIN: courseDetailTmp -->
         <script type="text/template" id="enrollCoursePanelTmp">
-            <h4><%- _course.name %></h4>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h3><%- _course.name %></h3>
+                </div>
+                <div class="ui-block-b">
+                    <h1 class="student-grade mc-text-center">
+                        <span class="grade-value"></span>%
+                        (<span class="letter-grade"></span>)
+                    </h1>
+                </div>
+            </div>
+
 
             <!--input whatif scores-->
             <form id="whatifGradeForm">
-
-                <h5>What-if Grade:</h5>
-
+                <input type="hidden" id="grading-scale"
+                       data-a="<%- _course.policy.A %>" data-b="<%- _course.policy.B %>"
+                       data-c="<%- _course.policy.C %>" data-d="<%- _course.policy.D %>">
                 <!-- change to slider, max with meta.XX.max-->
 
-                <label for="HomeworksWhatif">Homeworks Whatif:</label>
-                <input type="range" name="HomeworksWhatif" id="HomeworksWhatif" value="<%- grade.Homeworks.whatif %>" min="0" max="<%- _course.meta.Homeworks.max %>" />
+                <label for="HomeworksWhatif" class="mc-text-center">Homeworks Whatif:</label>
+                <input type="range" name="HomeworksWhatif" id="HomeworksWhatif"
+                       value="<%- grade.Homeworks.actual %>" min="0" max="<%- _course.meta.Homeworks.max %>" />
+                <label class="max"><%- _course.meta.Homeworks.max %></label>
+                <input type="hidden" id="HomeworksFactor" value="<%- _course.meta.Homeworks.factor %>">
 
                 <label for="LabsWhatif">Labs Whatif:</label>
-                <input type="range" name="LabsWhatif" id="LabsWhatif" value="<%- grade.Labs.whatif %>" min="0" max="<%- _course.meta.Labs.max %>" />
+                <input type="range" name="LabsWhatif" id="LabsWhatif"
+                       value="<%- grade.Labs.actual %>" min="0" max="<%- _course.meta.Labs.max %>" />
+                <label class="max"><%- _course.meta.Labs.max %></label>
+                <input type="hidden" id="LabsFactor" value="<%- _course.meta.Labs.factor %>">
 
                 <label for="ProjectWhatif">Project Whatif:</label>
-                <input type="range" name="ProjectWhatif" id="ProjectWhatif" value="<%- grade.Project.whatif %>" min="0" max="<%- _course.meta.Project.max %>" />
+                <input type="range" name="ProjectWhatif" id="ProjectWhatif"
+                       value="<%- grade.Project.actual %>" min="0" max="<%- _course.meta.Project.max %>" />
+                <label class="max"><%- _course.meta.Project.max %></label>
+                <input type="hidden" id="ProjectFactor" value="<%- _course.meta.Project.factor %>">
 
                 <label for="PresentationWhatif">Presentation Whatif:</label>
-                <input type="range" name="PresentationWhatif" id="PresentationWhatif" value="<%- grade.Presentation.whatif %>" min="0" max="<%- _course.meta.Presentation.max %>" />
+                <input type="range" name="PresentationWhatif" id="PresentationWhatif"
+                       value="<%- grade.Presentation.actual %>" min="0" max="<%- _course.meta.Presentation.max %>" />
+                <label class="max"><%- _course.meta.Presentation.max %></label>
+                <input type="hidden" id="PresentationFactor" value="<%- _course.meta.Presentation.factor %>">
 
                 <label for="MidtermWhatif">Midterm Whatif:</label>
-                <input type="range" name="MidtermWhatif" id="MidtermWhatif" value="<%- grade.Midterm.whatif %>" min="0" max="<%- _course.meta.Midterm.max %>" />
+                <input type="range" name="MidtermWhatif" id="MidtermWhatif"
+                       value="<%- grade.Midterm.actual %>" min="0" max="<%- _course.meta.Midterm.max %>" />
+                <label class="max"><%- _course.meta.Midterm.max %></label>
+                <input type="hidden" id="MidtermFactor" value="<%- _course.meta.Midterm.factor %>">
 
                 <label for="FinalWhatif">Final Whatif:</label>
-                <input type="range" name="FinalWhatif" id="FinalWhatif" value="<%- grade.Final.whatif %>" min="0" max="<%- _course.meta.Final.max %>" />
+                <input type="range" name="FinalWhatif" id="FinalWhatif"
+                       value="<%- grade.Final.actual %>" min="0" max="<%- _course.meta.Final.max %>" />
+                <label class="max"><%- _course.meta.Final.max %></label>
+                <input type="hidden" id="FinalFactor" value="<%- _course.meta.Final.factor %>">
 
                 <br/>
-                <button id="calWhatifGradeBtn" data-icon="flat-eye" data-theme="b">Calculate what-if grade</button>
+                <!--<button id="calWhatifGradeBtn" data-icon="flat-eye"
+                data-theme="b">Calculate what-if grade</button>-->
                 <!--TODO: error alert dialoge-->
 
             </form>
@@ -1082,7 +1114,7 @@
 
 
         <!--TODO calculate My total current grade-->
-        <h5>My Grade: <span id="whatifGrade"></span></h5>
+        <!--<h5>My Grade: <span id="whatifGrade"></span></h5>-->
 
     </div><!-- /content -->
 </div><!-- /whatifEdit page -->
