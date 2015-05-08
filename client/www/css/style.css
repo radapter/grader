@@ -34,10 +34,6 @@ h4 {
     margin: 0.5em auto;
 }
 
-#createCourseForm label{
-    width: 50%;
-}
-
 #createCourseForm .ui-field-contain{
     margin: 1% auto;
 }
@@ -50,4 +46,31 @@ h4 {
 
 #enrollCourse p.no-courses{
     display: none;
+}
+
+@media ( min-width: 25em ) {
+    /* Show the table header rows and set all cells to display: table-cell */
+    .table-breakpoint td,
+    .table-breakpoint th,
+    .table-breakpoint tbody th,
+    .table-breakpoint tbody td,
+    .table-breakpoint thead td,
+    .table-breakpoint thead th {
+        display: table-cell;
+        margin: 0;
+    }
+    /* Hide the labels in each cell */
+    .table-breakpoint td .ui-table-cell-label,
+    .table-breakpoint th .ui-table-cell-label {
+        display: none;
+    }
+}
+
+th {
+    border-bottom: 1px solid #d6d6d6;
+    background: #e9e9e9;
+}
+
+tr {
+    border-bottom: 1px solid #d6d6d6;
 }

@@ -319,7 +319,7 @@
             </div>
 
             <div data-role="collapsible" class="course-meta">
-                <h3>Course Metadata</h3>
+                <h3>Grading Weights</h3>
 
                 <h4>Total Course Percentage: <span id="total-percent">0</span>%</h4>
                 <p class="percent-error">
@@ -589,26 +589,93 @@
         <div id="courseDetailPanel"></div>
         <!-- BEGIN: courseDetailTmp -->
         <script type="text/template" id="courseDetailTmp">
-            <h4>Course Name: <%- name %></h4>
-            <!-- !!!! DO NOT add text in this div except the _id-->
-            <h6 id="courseIDDetailPage"><%- _id %></h6>
-            <h4>Description: <%- description %></h4>
-            <h4>Owner: <%- _owner.fname %> <%- _owner.lname %> </h4>
-            Meta:
-            <h4>Homeworks: Max- <%- meta.Homeworks.max %>, Factor-<%- meta.Homeworks.factor %> </h4>
-            <h4>Labs: Max- <%- meta.Labs.max %>, Factor-<%- meta.Labs.factor %> </h4>
-            <h4>Project: Max- <%- meta.Project.max %>, Factor-<%- meta.Project.factor %> </h4>
-            <h4>Presentation: Max- <%- meta.Presentation.max %>, Factor-<%- meta.Presentation.factor %> </h4>
-            <h4>Midterm: Max- <%- meta.Midterm.max %>, Factor-<%- meta.Midterm.factor %> </h4>
-            <h4>Final: Max- <%- meta.Final.max %>, Factor-<%- meta.Final.factor %> </h4>
+            <div data-role="collapsible" class="course-info" data-collapsed="false">
+                <h3>Course</h3>
+                <h4><%- name %></h4>
+                <!-- !!!! DO NOT add text in this div except the _id-->
+                <h6 style="display: none;" id="courseIDDetailPage"><%- _id %></h6>
+                <h6 style="display: none;">Owner: <%- _owner.fname %> <%- _owner.lname %> </h6>
+                <h4><%- description %></h4>
+            </div>
 
-            <br/>
-            Policy:
-            <h4>Policy-A: <%- policy.A %></h4>
-            <h4>Policy-B: <%- policy.B %></h4>
-            <h4>Policy-C: <%- policy.C %></h4>
-            <h4>Policy-D: <%- policy.D %></h4>
+            <div data-role="collapsible" class="course-meta">
+                <h3>Grading Weights</h3>
+                <table data-role="table" class="table-breakpoint">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Max Points</th>
+                            <th>% (out of 100)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Homework</td>
+                            <td><%- meta.Homeworks.max %></td>
+                            <td><%- meta.Homeworks.factor %>%</td>
+                        </tr>
+                        <tr>
+                            <td>Labs</td>
+                            <td><%- meta.Labs.max %></td>
+                            <td><%- meta.Labs.factor %>%</td>
+                        </tr>
+                        <tr>
+                            <td>Project</td>
+                            <td><%- meta.Project.max %></td>
+                            <td><%- meta.Project.factor %>%</td>
+                        </tr>
+                        <tr>
+                            <td>Presentation</td>
+                            <td><%- meta.Presentation.max %></td>
+                            <td><%- meta.Presentation.factor %>%</td>
+                        </tr>
+                        <tr>
+                            <td>Midterm</td>
+                            <td><%- meta.Midterm.max %></td>
+                            <td><%- meta.Midterm.factor %>%</td>
+                        </tr>
+                        <tr>
+                            <td>Final</td>
+                            <td><%- meta.Final.max %></td>
+                            <td><%- meta.Final.factor %>%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <div data-role="collapsible" class="course-grading">
+                <h3>Grading Cutoffs</h3>
+                <table data-role="table" class="table-breakpoint">
+                    <thead>
+                        <tr>
+                            <th>Grade</th>
+                            <th>Percentage Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td><%- policy.A %>% - 100%</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td><%- policy.B %>% - <%- policy.A-1 %>%</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td><%- policy.C %>% - <%- policy.B-1 %>%</td>
+                        </tr>
+                        <tr>
+                            <td>D</td>
+                            <td><%- policy.D %>% - <%- policy.C-1 %>%</td>
+                        </tr>
+                        <tr>
+                            <td>F</td>
+                            <td>0% - <%- policy.D-1 %>%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </script>
         <!-- END: courseDetailTmp Underscore Template Definition. -->
 
@@ -617,19 +684,23 @@
         <div id="enrollList"></div>
         <!-- BEGIN: courseEnrolListTmp -->
         <script type="text/template" id="courseEnrolListTmp">
-            <div data-role="collapsible-set" data-theme="e" data-content-theme="e">
-                <% _.each(enrolls, function(enroll){ %>
-
-                <div class="enrollPanel" id="<%- enroll._id %>" data-role="collapsible" data-collapsed-icon="flat-man" data-expanded-icon="flat-cross" data-collapsed="true">
-                    <h3><%- enroll._student.fname %> <%- enroll._student.lname %></h3>
-                    <p>Final: <%- enroll.grade.Final.actual %></p>
-                    <p>Midterm: <%- enroll.grade.Midterm.actual %></p>
-                    <p>Presentation: <%- enroll.grade.Presentation.actual %></p>
-                    <p>Project: <%- enroll.grade.Project.actual %></p>
-                    <p>Labs: <%- enroll.grade.Labs.actual %></p>
-                    <p>Homeworks: <%- enroll.grade.Homeworks.actual %></p>
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>Enrolled Students</h3>
+                <div data-role="collapsible-set" data-theme="e" data-content-theme="e">
+                    <% _.each(enrolls, function(enroll){ %>
+                    <div class="enrollPanel" id="<%- enroll._id %>"
+                         data-role="collapsible" data-collapsed-icon="flat-man"
+                         data-expanded-icon="flat-cross" data-collapsed="true">
+                        <h3><%- enroll._student.fname %> <%- enroll._student.lname %></h3>
+                        <p>Final: <%- enroll.grade.Final.actual %></p>
+                        <p>Midterm: <%- enroll.grade.Midterm.actual %></p>
+                        <p>Presentation: <%- enroll.grade.Presentation.actual %></p>
+                        <p>Project: <%- enroll.grade.Project.actual %></p>
+                        <p>Labs: <%- enroll.grade.Labs.actual %></p>
+                        <p>Homeworks: <%- enroll.grade.Homeworks.actual %></p>
+                    </div>
+                    <% }); %>
                 </div>
-                <% }); %>
             </div>
         </script>
         <!-- END: courseEnrolListTmp Underscore Template Definition. -->
