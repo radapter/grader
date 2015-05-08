@@ -1069,7 +1069,10 @@
                     <h3><strong><%- _student.fname %> <%- _student.lname %></strong></h3>
                 </div>
                 <div class="ui-block-b">
-                    <h1 class="student-grade mc-text-center">80% (A)</h1>
+                    <h1 class="student-grade mc-text-center">
+                        <span class="grade-value"></span>%
+                        (<span class="letter-grade"></span>)
+                    </h1>
                 </div>
             </div>
 
@@ -1077,11 +1080,15 @@
             <!--input whatif scores-->
             <form id="actualScoreForm">
                 <!-- change to slider, max with meta.XX.max-->
+                <input type="hidden" id="grading-scale"
+                       data-a="<%- _course.policy.A %>" data-b="<%- _course.policy.B %>"
+                       data-c="<%- _course.policy.C %>" data-d="<%- _course.policy.D %>">
 
                 <label for="HomeworksActual" class="mc-text-center">Homework</label>
                 <input type="range" name="HomeworksActual" id="HomeworksActual" min="0"
                        value="<%- grade.Homeworks.actual %>" max="<%- _course.meta.Homeworks.max %>"/>
                 <label class="max"><%- _course.meta.Homeworks.max %></label>
+                <input type="hidden" id="HomeworksFactor" value="<%- _course.meta.Homeworks.factor %>">
 
                 <br>
 
@@ -1089,6 +1096,7 @@
                 <input type="range" name="LabsActual" id="LabsActual" value="<%- grade.Labs.actual %>"
                        min="0" max="<%- _course.meta.Labs.max %>" />
                 <label class="max"><%- _course.meta.Labs.max %></label>
+                <input type="hidden" id="LabsFactor" value="<%- _course.meta.Labs.factor %>">
 
                 <br>
 
@@ -1096,6 +1104,7 @@
                 <input type="range" name="ProjectActual" id="ProjectActual" value="<%- grade.Project.actual %>"
                        min="0" max="<%- _course.meta.Project.max %>" />
                 <label class="max"><%- _course.meta.Project.max %></label>
+                <input type="hidden" id="ProjectFactor" value="<%- _course.meta.Project.factor %>">
 
                 <br>
 
@@ -1103,6 +1112,7 @@
                 <input type="range" name="PresentationActual" id="PresentationActual"
                        value="<%- grade.Presentation.actual %>" min="0" max="<%- _course.meta.Presentation.max %>" />
                 <label class="max"><%- _course.meta.Presentation.max %></label>
+                <input type="hidden" id="PresentationFactor" value="<%- _course.meta.Presentation.factor %>">
 
                 <br>
 
@@ -1110,6 +1120,7 @@
                 <input type="range" name="MidtermActual" id="MidtermActual" value="<%- grade.Midterm.actual %>"
                        min="0" max="<%- _course.meta.Midterm.max %>" />
                 <label class="max"><%- _course.meta.Midterm.max %></label>
+                <input type="hidden" id="MidtermFactor" value="<%- _course.meta.Midterm.factor %>">
 
                 <br>
 
@@ -1117,12 +1128,13 @@
                 <input type="range" name="FinalActual" id="FinalActual" value="<%- grade.Final.actual %>"
                        min="0" max="<%- _course.meta.Final.max %>" />
                 <label class="max"><%- _course.meta.Final.max %></label>
+                <input type="hidden" id="FinalFactor" value="<%- _course.meta.Final.factor %>">
 
                 <br/>
                 <button id="calActualGradeBtn" data-icon="flat-checkround" data-theme="b">
                     Calculate & Save Grade</button>
 
-                <span id="grade"></span>
+                <span id="grade" style="display: none;"></span>
                 <!--TODO: error alert dialoge-->
 
             </form>

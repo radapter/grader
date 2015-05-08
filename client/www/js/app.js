@@ -70,6 +70,14 @@
             changeSlidersEdit();
         });
 
+        $(document).on('pageinit', '#actualScoreEdit', function(){
+            calculateGrade();
+            $("input").change(function(){
+                //console.log("here");
+               calculateGrade();
+            });
+        })
+
         $('#computeGrade').on('click', computeGrade);
         $('#saveSettings').on('click', saveSettings);
         $('#cancelSettings').on('click', cancelSettings);
@@ -174,6 +182,92 @@
 
 
     var calculateGrade = function(){
+        var form = $('#actualScoreForm');
+        //console.log(form);
+
+        //collect user input
+        var actualGrade = {};
+        var Homeworks = {};
+        var totalScore = 0;
+        Homeworks.actual = form.find('input[name="HomeworksActual"]').val();
+        Homeworks.max = form.find('input[name="HomeworksActual"]').prop('max');
+        Homeworks.factor = form.find('input#HomeworksFactor').val();
+        totalScore += (Homeworks.actual/Homeworks.max)*(Homeworks.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Labs = {};
+        Labs.actual = form.find('input[name="LabsActual"]').val();
+        Labs.max = form.find('input[name="LabsActual"]').prop('max');
+        Labs.factor = form.find('input#LabsFactor').val();
+        totalScore += (Labs.actual/Labs.max)*(Labs.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Project = {};
+        Project.actual = form.find('input[name="ProjectActual"]').val();
+        Project.max = form.find('input[name="ProjectActual"]').prop('max');
+        Project.factor = form.find('input#ProjectFactor').val();
+        totalScore += (Project.actual/Project.max)*(Project.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Presentation = {};
+        Presentation.actual = form.find('input[name="PresentationActual"]').val();
+        Presentation.max = form.find('input[name="PresentationActual"]').prop('max');
+        Presentation.factor = form.find('input#PresentationFactor').val();
+        totalScore += (Presentation.actual/Presentation.max)*(Presentation.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Midterm = {};
+        Midterm.actual = form.find('input[name="MidtermActual"]').val();
+        Midterm.max = form.find('input[name="MidtermActual"]').prop('max');
+        Midterm.factor = form.find('input#MidtermFactor').val();
+        totalScore += (Midterm.actual/Midterm.max)*(Midterm.factor);
+        //console.log(totalScore.toFixed(3));
+
+        var Final = {};
+        Final.actual = form.find('input[name="FinalActual"]').val();
+        Final.max = form.find('input[name="FinalActual"]').prop('max');
+        Final.factor = form.find('input#FinalFactor').val();
+        totalScore += (Final.actual/Final.max)*(Final.factor);
+        //console.log(totalScore.toFixed(3));
+
+        actualGrade.Homeworks = Homeworks;
+        actualGrade.Labs = Labs;
+        actualGrade.Project = Project;
+        actualGrade.Presentation = Presentation;
+        actualGrade.Midterm = Midterm;
+        actualGrade.Final = Final;
+
+        //console.log(actualGrade);
+        console.log(totalScore.toFixed(1));
+
+        $("h1.student-grade span.grade-value").html(totalScore.toFixed(1));
+        var totalGrade = '';
+
+        var scale = $("input#grading-scale");
+        var minA = scale.attr("data-a");
+        var minB = scale.attr("data-b");
+        var minC = scale.attr("data-c");
+        var minD = scale.attr("data-d");
+        console.log(minA, minB, minC, minD);
+        if(totalScore >= minA){
+            totalGrade = "A";
+        }
+        else if(totalScore >= minB){
+            totalGrade = "B";
+        }
+        else if (totalScore >= minC){
+            totalGrade = "C";
+        }
+        else if (totalScore >= minD){
+            totalGrade = "D";
+        }
+        else{
+            totalGrade = "F";
+        }
+
+        $("h1.student-grade span.letter-grade").html(totalGrade);
+
+
 
     }
 
