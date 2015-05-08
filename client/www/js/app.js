@@ -29,7 +29,7 @@
 
 
 
-        $(document).on('pageinit', '#createCourse' ,function(){
+        $(document).on('pageshow', '#createCourse' ,function(){
             //$("div.cutoffs").rangeslider({defaults: true});
             changeSliders();
 
@@ -66,11 +66,11 @@
 
         });
 
-        $(document).on('pageinit', '#editCourse', function(){
+        $(document).on('pageshow', '#editCourse', function(){
             changeSlidersEdit();
         });
 
-        $(document).on('pageinit', '#actualScoreEdit', function(){
+        $(document).on('pageshow', '#actualScoreEdit', function(){
             calculateGrade();
             $("input").change(function(){
                 //console.log("here");
@@ -621,9 +621,9 @@
             $.getJSON(urlroot+"/enrolls/", function (data) {
                 var userCourseList = data;
                 console.log(userCourseList);
-                if(!userCourseList.length){
+                /*if(!userCourseList.length){
                     $("p.no-courses").show();
-                }
+                }*/
 
                 //save userCourseList in sessionStorage
                 sessionStorage.setItem('userCourseList', JSON.stringify(userCourseList));

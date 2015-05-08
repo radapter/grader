@@ -47,6 +47,14 @@ h4 {
     width: 100%;
 }
 
+#signupForm label{
+    height: 50px;
+    font-size: 2em;
+    text-align: center;
+
+}
+
+
 p.percent-error{
     display: none;
     font-size: larger;

@@ -89,11 +89,15 @@
         <form id="signupForm">
             <!--select user type teacher or student-->
             <div data-role="fieldcontain">
-                <label for="select-choice-a">I am a:</label>
-                <select name="userType" id="select-choice-a" data-native-menu="false" data-theme="f">
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
-                </select>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a"><label for="select-choice-a" class="mc-text-right">I am a:</label></div>
+                    <div class="ui-block-b">
+                        <select name="userType" id="select-choice-a" data-native-menu="false" data-theme="f">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="fieldcontain">
                 <span class="ui-icon ui-icon-flat-mail ui-icon-shadow form-icon"></span>
@@ -1140,7 +1144,7 @@
             </form>
         </script>
 
-        <h5>Total Grade: <span id="actualGrade"></span></h5>
+        <h5 style="display: none;">Total Grade: <span id="actualGrade"></span></h5>
 
     </div><!-- /content -->
 </div><!-- /actualScoreEdit page -->
