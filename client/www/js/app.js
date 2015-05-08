@@ -31,56 +31,7 @@
 
         $(document).on('pageinit', '#createCourse' ,function(){
             //$("div.cutoffs").rangeslider({defaults: true});
-
-
-            $("#createCourseForm .slider input").on("change", function(){
-                //console.log(this.id);
-                var $this = $(this).closest("div.cutoffs");
-                var aMin = $this.find("#range-a-min").val();
-                var bMax = $this.find("#range-b-max").val();
-                var bMin = $this.find("#range-b-min").val();
-                var cMax = $this.find("#range-c-max").val();
-                var cMin = $this.find("#range-c-min").val();
-                var dMax = $this.find("#range-d-max").val();
-                var dMin = $this.find("#range-d-min").val();
-                var fMax = $this.find("#range-f-max").val();
-
-                if(this.id == "range-a-min"){
-                    $this.find("#range-b-max").val(parseInt(aMin)-1)
-                    $this.find("#range-b-max").slider("refresh");
-                }
-                else if (this.id == "range-b-max"){
-                    $this.find("#range-a-min").val(parseInt(bMax)+1);
-                    //$this.find("#range-a-min").slider("refresh");
-                }
-
-                if (this.id == "range-b-min"){
-                    $this.find("#range-c-max").val(parseInt(bMin)-1);
-                    $this.find("#range-c-max").slider("refresh");
-                }
-                else if (this.id == "range-c-max") {
-                    $this.find("#range-b-min").val(parseInt(cMax) + 1);
-                    //$this.find("#range-b-min").slider("refresh");
-                }
-
-                if (this.id == "range-c-min"){
-                    $this.find("#range-d-max").val(parseInt(cMin)-1);
-                    $this.find("#range-d-max").slider("refresh");
-                }
-                else if (this.id == "range-d-max"){
-                    $this.find("#range-c-min").val(parseInt(dMax)+1);
-                    //$this.find("#range-c-min").slider("refresh");
-                }
-
-                if (this.id == "range-d-min"){
-                    $this.find("#range-f-max").val(parseInt(dMin)-1);
-                    $this.find("#range-f-max").slider("refresh");
-                }
-                else if (this.id == "range-f-max"){
-                    $this.find("#range-d-min").val(parseInt(fMax)+1);
-                    //$this.find("#range-d-min").slider("refresh");
-                }
-            });
+            changeSliders();
 
             $("#createCourseForm input.percent").on("change", function(){
                 var totalPercent = 0;
@@ -89,7 +40,7 @@
                         //console.log($(this).id + ": " + $(this).val());
                         totalPercent += parseInt($(this).val());
                         console.log("totalPercent is: " + totalPercent);
-                        $("span#total-percent").html(totalPercent);
+                        $("span.total-percent").html(totalPercent);
                     }
                 });
 
@@ -113,6 +64,10 @@
             });
 
 
+        });
+
+        $(document).on('pageinit', '#editCourse', function(){
+            changeSlidersEdit();
         });
 
         $('#computeGrade').on('click', computeGrade);
@@ -215,6 +170,114 @@
         //StatusBar.overlaysWebView( false );
         //StatusBar.backgroundColorByName("gray");
     });
+
+
+
+    var calculateGrade = function(){
+
+    }
+
+    var changeSlidersEdit = function(){
+        $(".slider input").on("change", function(){
+            //console.log(this.id);
+            var $this = $(this).closest("div.cutoffs");
+            var aMin = $this.find("#edit-a-min").val();
+            var bMax = $this.find("#edit-b-max").val();
+            var bMin = $this.find("#edit-b-min").val();
+            var cMax = $this.find("#edit-c-max").val();
+            var cMin = $this.find("#edit-c-min").val();
+            var dMax = $this.find("#edit-d-max").val();
+            var dMin = $this.find("#edit-d-min").val();
+            var fMax = $this.find("#edit-f-max").val();
+
+            if(this.id == "edit-a-min"){
+                $this.find("#edit-b-max").val(parseInt(aMin)-1)
+                $this.find("#edit-b-max").slider("refresh");
+            }
+            else if (this.id == "edit-b-max"){
+                $this.find("#edit-a-min").val(parseInt(bMax)+1);
+                //$this.find("#edit-a-min").slider("refresh");
+            }
+
+            if (this.id == "edit-b-min"){
+                $this.find("#edit-c-max").val(parseInt(bMin)-1);
+                $this.find("#edit-c-max").slider("refresh");
+            }
+            else if (this.id == "edit-c-max") {
+                $this.find("#edit-b-min").val(parseInt(cMax) + 1);
+                //$this.find("#edit-b-min").slider("refresh");
+            }
+
+            if (this.id == "edit-c-min"){
+                $this.find("#edit-d-max").val(parseInt(cMin)-1);
+                $this.find("#edit-d-max").slider("refresh");
+            }
+            else if (this.id == "edit-d-max"){
+                $this.find("#edit-c-min").val(parseInt(dMax)+1);
+                //$this.find("#edit-c-min").slider("refresh");
+            }
+
+            if (this.id == "edit-d-min"){
+                $this.find("#edit-f-max").val(parseInt(dMin)-1);
+                $this.find("#edit-f-max").slider("refresh");
+            }
+            else if (this.id == "edit-f-max"){
+                $this.find("#edit-d-min").val(parseInt(fMax)+1);
+                //$this.find("#edit-d-min").slider("refresh");
+            }
+        });
+    }
+
+    var changeSliders = function(){
+        $(".slider input").on("change", function(){
+            //console.log(this.id);
+            var $this = $(this).closest("div.cutoffs");
+            var aMin = $this.find("#range-a-min").val();
+            var bMax = $this.find("#range-b-max").val();
+            var bMin = $this.find("#range-b-min").val();
+            var cMax = $this.find("#range-c-max").val();
+            var cMin = $this.find("#range-c-min").val();
+            var dMax = $this.find("#range-d-max").val();
+            var dMin = $this.find("#range-d-min").val();
+            var fMax = $this.find("#range-f-max").val();
+
+            if(this.id == "range-a-min"){
+                $this.find("#range-b-max").val(parseInt(aMin)-1)
+                $this.find("#range-b-max").slider("refresh");
+            }
+            else if (this.id == "range-b-max"){
+                $this.find("#range-a-min").val(parseInt(bMax)+1);
+                //$this.find("#range-a-min").slider("refresh");
+            }
+
+            if (this.id == "range-b-min"){
+                $this.find("#range-c-max").val(parseInt(bMin)-1);
+                $this.find("#range-c-max").slider("refresh");
+            }
+            else if (this.id == "range-c-max") {
+                $this.find("#range-b-min").val(parseInt(cMax) + 1);
+                //$this.find("#range-b-min").slider("refresh");
+            }
+
+            if (this.id == "range-c-min"){
+                $this.find("#range-d-max").val(parseInt(cMin)-1);
+                $this.find("#range-d-max").slider("refresh");
+            }
+            else if (this.id == "range-d-max"){
+                $this.find("#range-c-min").val(parseInt(dMax)+1);
+                //$this.find("#range-c-min").slider("refresh");
+            }
+
+            if (this.id == "range-d-min"){
+                $this.find("#range-f-max").val(parseInt(dMin)-1);
+                $this.find("#range-f-max").slider("refresh");
+            }
+            else if (this.id == "range-f-max"){
+                $this.find("#range-d-min").val(parseInt(fMax)+1);
+                //$this.find("#range-d-min").slider("refresh");
+            }
+        });
+    }
 
     var computeGrade = function() {
         var currentPoints = Number( $('#points').val() );
@@ -383,16 +446,10 @@
         courseObj.meta = meta;
 
         var policy ={};
-        policy.AMax = $("input#range-a-max").val();
-        policy.AMin = $("input#range-a-min").val();
-        policy.BMax = $("input#range-b-max").val();
-        policy.BMin = $("input#range-b-min").val();
-        policy.CMax = $("input#range-c-max").val();
-        policy.CMin = $("input#range-c-min").val();
-        policy.DMax = $("input#range-d-max").val();
-        policy.DMin = $("input#range-d-min").val();
-        policy.FMax = $("input#range-f-max").val();
-        policy.FMin = $("input#range-f-min").val();
+        policy.A = $("input#range-a-min").val();
+        policy.B = $("input#range-b-min").val();
+        policy.C = $("input#range-c-min").val();
+        policy.D = $("input#range-d-min").val();
 
         courseObj.policy = policy;
 
@@ -1060,10 +1117,10 @@
         courseObj.meta = meta;
 
         var policy ={};
-        policy.A = form.find("input[name=PolicyA]").val();
-        policy.B = form.find("input[name=PolicyB]").val();
-        policy.C = form.find("input[name=PolicyC]").val();
-        policy.D = form.find("input[name=PolicyD]").val();
+        policy.A = form.find("#edit-a-min").val();
+        policy.B = form.find("#edit-b-min").val();
+        policy.C = form.find("#edit-c-min").val();
+        policy.D = form.find("#edit-d-min").val();
 
         courseObj.policy = policy;
 

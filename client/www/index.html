@@ -487,7 +487,7 @@
                 <input type="text" name="PolicyD" placeholder="Policy D"/>-->
             </div>
 
-            <button id="createCourseBtn" data-icon="flat-checkround" data-iconpos="right" data-theme="b">
+            <button id="createCourseBtn" data-icon="flat-checkround" data-iconpos="left" data-theme="b">
                 Create Course
             </button>
             <!--TODO: error alert dialoge-->
@@ -513,39 +513,190 @@
             <!-- edit a course form-->
             <form id="editCourseForm">
 
-                <input type="text" name="name" value="<%- name %>" placeholder="course name" required/>
-                <textarea name="description" cols="30" rows="10" placeholder="course description"><%- description %></textarea>
+                <div data-role="collapsible" data-collapsed="false" >
+                    <h3>General</h3>
+                    <strong>Course Name</strong>
+                    <input type="text" name="name" placeholder="CMPE 235" value="<%- name %>" required/>
 
-                <h5>Meta:</h5>
-                Homeworks Max
-                <input type="number" name="HomeworksMax" value="<%- meta.Homeworks.max %>" placeholder="homework max"/>
-                Homeworks Factor
-                <input type="text" name="HomeworksFactor" value="<%- meta.Homeworks.factor %>" placeholder="homework factor"/>
+                    <strong>Course Description</strong>
+                    <textarea name="description" id="coursedesc" cols="30" rows="10"
+                          placeholder="Mobile systems, RFID, etc" required><%- description %></textarea>
+                </div>
 
-                Labs Max
-                <input type="number" name="LabsMax" value="<%- meta.Labs.max %>" placeholder="Labs max"/>
-                Labs Factor
-                <input type="text" name="LabsFactor" value="<%- meta.Labs.factor %>" placeholder="Labs factor"/>
+                <div data-role="collapsible" class="course-meta">
+                    <h3>Grading Weights</h3>
 
-                Project Max
-                <input type="number" name="ProjectMax" value="<%- meta.Project.max %>" placeholder="Project max"/>
-                Project Factor
-                <input type="text" name="ProjectFactor" value="<%- meta.Project.factor %>" placeholder="Project factor"/>
+                    <h4>Total Course Percentage:
+                        <span class="total-percent">
+                            <%-meta.Homeworks.factor+meta.Labs.factor+meta.Presentation.factor+meta.Project.factor
+                                +meta.Midterm.factor+meta.Final.factor%>
+                        </span>%</h4>
+                    <p class="percent-error">
+                        ERROR: Your total percentage does not sum to 100%. Please adjust to correct it.</p>
 
-                Presentation Max
-                <input type="number" name="PresentationMax" value="<%- meta.Presentation.max %>" placeholder="Presentation max"/>
-                Presentation Factor
-                <input type="text" name="PresentationFactor" value="<%- meta.Presentation.factor %>" placeholder="Presentation factor"/>
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Homework</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="hwkmax">Max Points:</label>
+                                    <input type="number" id="hwkmax" name="HomeworksMax"
+                                           value="<%- meta.Homeworks.max %>"
+                                           placeholder="500" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="hwkpercent">% (out of 100):</label>
+                                    <input type="number" name="HomeworksFactor" class="percent" id="hwkpercent"
+                                           value="<%- meta.Homeworks.factor %>" placeholder="10" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                Midterm Max
-                <input type="number" name="MidtermMax" value="<%- meta.Midterm.max %>" placeholder="Midterm max"/>
-                Midterm Factor
-                <input type="text" name="MidtermFactor" value="<%- meta.Midterm.factor %>" placeholder="Midterm factor"/>
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Labs</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="labmax">Max Points:</label>
+                                    <input type="number" id="labmax" name="LabsMax"
+                                           value="<%- meta.Labs.max %>" placeholder="500" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="labpercent">% (out of 100):</label>
+                                    <input type="number" name="LabsFactor" class="percent" id="labpercent"
+                                           value="<%- meta.Labs.factor %>" placeholder="40" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                Final Max
-                <input type="number" name="FinalMax" value="<%- meta.Final.max %>" placeholder="Final max"/>
-                Final Factor
-                <input type="text" name="FinalFactor" value="<%- meta.Final.factor %>" placeholder="Final factor"/>
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Project</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="projmax">Max Points:</label>
+                                    <input type="number" id="projmax" name="ProjectMax"
+                                           value="<%- meta.Project.max %>" placeholder="200" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="projpercent">% (out of 100):</label>
+                                    <input type="number" name="ProjectFactor" class="percent" id="projpercent"
+                                           value="<%- meta.Project.factor %>" placeholder="20" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Presentation</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="presmax">Max Points:</label>
+                                    <input type="number" id="presmax" name="PresentationMax"
+                                           value="<%- meta.Presentation.max %>" placeholder="100" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="prespercent">% (out of 100):</label>
+                                    <input type="number" name="PresentationFactor" class="percent" id="prespercent"
+                                           value="<%- meta.Presentation.factor %>" placeholder="10" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Midterm</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="mtmax">Max Points:</label>
+                                    <input type="number" id="mtmax" name="MidtermMax"
+                                           value="<%- meta.Midterm.max %>" placeholder="100" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="mtpercent">% (out of 100):</label>
+                                    <input type="number" name="MidtermFactor" class="percent" id="mtpercent"
+                                           value="<%- meta.Midterm.factor %>" placeholder="10" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-role="collapsible" data-collapsed="false" data-theme="b" data-content-theme="b">
+                        <h4>Final</h4>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a">
+                                <div data-role="fieldcontain">
+                                    <label for="finalmax">Max Points:</label>
+                                    <input type="number" id="finalmax" name="FinalMax"
+                                           value="<%- meta.Final.max %>" placeholder="100" required/>
+                                </div>
+                            </div>
+                            <div class="ui-block-b">
+                                <div data-role="fieldcontain">
+                                    <label for="finalpercent">% (out of 100):</label>
+                                    <input type="number" name="FinalFactor" class="percent" id="finalpercent"
+                                           value="<%- meta.Final.factor %>" placeholder="10" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="percent-error">
+                        ERROR: Your total percentage does not sum to 100%. Please adjust to correct it.</p>
+                </div>
+
+                <div data-role="collapsible" class="cutoffs">
+                    <h3>Grading Cutoffs</h3>
+                    <div data-role="rangeslider" class="slider slider-a">
+                        <label for="edit-a-min">Cutoffs for A:</label>
+                        <input name="edit-a-min" id="edit-a-min" min="0" max="100" value="<%- policy.A %>" type="range" />
+                        <input name="edit-a-max" id="edit-a-max" min="0" max="100" value="100" type="range" />
+                    </div>
+                    <br>
+                    <div data-role="rangeslider" class="slider slider-b">
+                        <label for="edit-b-min">Cutoffs for B:</label>
+                        <input name="edit-b-min" id="edit-b-min" min="00" max="100" value="<%- policy.B %>" type="range" />
+                        <input name="edit-b-max" id="edit-b-max" min="0" max="100" value="<%- policy.A-1 %>" type="range" />
+                    </div>
+                    <br>
+                    <div data-role="rangeslider" class="slider slider-c">
+                        <label for="edit-c-min">Cutoffs for C:</label>
+                        <input name="edit-c-min" id="edit-c-min" min="00" max="100" value="<%- policy.C %>" type="range" />
+                        <input name="edit-c-max" id="edit-c-max" min="0" max="100" value="<%- policy.B-1%>" type="range" />
+                    </div>
+                    <br>
+                    <div data-role="rangeslider" class="slider slider-d">
+                        <label for="edit-d-min">Cutoffs for D:</label>
+                        <input name="edit-d-min" id="edit-d-min" min="0" max="100" value="<%- policy.D %>" type="range" />
+                        <input name="edit-d-max" id="edit-d-max" min="0" max="100" value="<%- policy.C-1 %>" type="range" />
+                    </div>
+                    <br>
+                    <div data-role="rangeslider" class="slider slider-f">
+                        <label for="edit-f-min">Cutoffs for F:</label>
+                        <input name="edit-f-min" id="edit-f-min" min="0" max="100" value="0" type="range"/>
+                        <input name="edit-f-max" id="edit-f-max" min="0" max="100" value="<%- policy.D-1 %>" type="range" />
+                    </div>
+                </div>
+
+
+
+
+                <!--<label for="course_name"><em>Course Name</em></label>
+
 
                 Policy - A
                 <input type="text" name="PolicyA" value="<%- policy.A %>" placeholder="Policy A"/>
@@ -554,7 +705,7 @@
                 Policy - C
                 <input type="text" name="PolicyC" value="<%- policy.C %>" placeholder="Policy C"/>
                 Policy - D
-                <input type="text" name="PolicyD" value="<%- policy.D %>" placeholder="Policy D"/>
+                <input type="text" name="PolicyD" value="<%- policy.D %>" placeholder="Policy D"/>-->
 
                 <button id="editCourseSubmitBtn" data-icon="flat-new" data-theme="b">Edit Course</button>
                 <!--TODO: error alert dialoge-->
@@ -693,49 +844,49 @@
                          data-expanded-icon="flat-cross" data-collapsed="true">
                         <!--<h5>Grade: <span class="grad-calc"></span></h5>-->
                         <h3><%- enroll._student.fname %> <%- enroll._student.lname %></h3>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Homework</h4>
+                                <h4 class="mc-text-right">Homework</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Homeworks.actual %></h4>
                             </div>
                         </div>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Labs</h4>
+                                <h4 class="mc-text-right">Labs</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Labs.actual %></h4>
                             </div>
                         </div>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Project</h4>
+                                <h4 class="mc-text-right">Project</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Project.actual %></h4>
                             </div>
                         </div>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Presentation</h4>
+                                <h4 class="mc-text-right">Presentation</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Presentation.actual %></h4>
                             </div>
                         </div>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Midterm</h4>
+                                <h4 class="mc-text-right">Midterm</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Midterm.actual %></h4>
                             </div>
                         </div>
-                        <div class="ui-grid-a mc-text-center">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a">
-                                <h4>Final</h4>
+                                <h4 class="mc-text-right">Final</h4>
                             </div>
                             <div class="ui-block-b">
                                 <h4><%- enroll.grade.Final.actual %></h4>
@@ -912,36 +1063,66 @@
         <div id="editActualScorePanel"></div>
         <!-- BEGIN: courseDetailTmp -->
         <script type="text/template" id="editAcutalScoreTmp">
-            <h4><%- _course.name %></h4>
-            <h4><%- _student.fname %> <%- _student.lname %></h4>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <h3><%- _course.name %></h3>
+                    <h3><strong><%- _student.fname %> <%- _student.lname %></strong></h3>
+                </div>
+                <div class="ui-block-b">
+                    <h1 class="student-grade mc-text-center">80% (A)</h1>
+                </div>
+            </div>
+
 
             <!--input whatif scores-->
             <form id="actualScoreForm">
-
-                <h5>Student Grades:</h5>
-
                 <!-- change to slider, max with meta.XX.max-->
 
-                <label for="HomeworksActual">Homeworks:</label>
-                <input type="range" name="HomeworksActual" id="HomeworksActual" min="0" value="<%- grade.Homeworks.actual %>" max="<%- _course.meta.Homeworks.max %>" />
+                <label for="HomeworksActual" class="mc-text-center">Homework</label>
+                <input type="range" name="HomeworksActual" id="HomeworksActual" min="0"
+                       value="<%- grade.Homeworks.actual %>" max="<%- _course.meta.Homeworks.max %>"/>
+                <label class="max"><%- _course.meta.Homeworks.max %></label>
 
-                <label for="LabsActual">Labs:</label>
-                <input type="range" name="LabsActual" id="LabsActual" value="<%- grade.Labs.actual %>" min="0" max="<%- _course.meta.Labs.max %>" />
+                <br>
 
-                <label for="ProjectActual">Project:</label>
-                <input type="range" name="ProjectActual" id="ProjectActual" value="<%- grade.Project.actual %>" min="0" max="<%- _course.meta.Project.max %>" />
+                <label for="LabsActual" class="mc-text-center">Labs</label>
+                <input type="range" name="LabsActual" id="LabsActual" value="<%- grade.Labs.actual %>"
+                       min="0" max="<%- _course.meta.Labs.max %>" />
+                <label class="max"><%- _course.meta.Labs.max %></label>
 
-                <label for="PresentationActual">Presentation:</label>
-                <input type="range" name="PresentationActual" id="PresentationActual" value="<%- grade.Presentation.actual %>" min="0" max="<%- _course.meta.Presentation.max %>" />
+                <br>
 
-                <label for="MidtermActual">Midterm:</label>
-                <input type="range" name="MidtermActual" id="MidtermActual" value="<%- grade.Midterm.actual %>" min="0" max="<%- _course.meta.Midterm.max %>" />
+                <label for="ProjectActual" class="mc-text-center">Project</label>
+                <input type="range" name="ProjectActual" id="ProjectActual" value="<%- grade.Project.actual %>"
+                       min="0" max="<%- _course.meta.Project.max %>" />
+                <label class="max"><%- _course.meta.Project.max %></label>
 
-                <label for="FinalActual">Final:</label>
-                <input type="range" name="FinalActual" id="FinalActual" value="<%- grade.Final.actual %>" min="0" max="<%- _course.meta.Final.max %>" />
+                <br>
+
+                <label for="PresentationActual" class="mc-text-center">Presentation</label>
+                <input type="range" name="PresentationActual" id="PresentationActual"
+                       value="<%- grade.Presentation.actual %>" min="0" max="<%- _course.meta.Presentation.max %>" />
+                <label class="max"><%- _course.meta.Presentation.max %></label>
+
+                <br>
+
+                <label for="MidtermActual" class="mc-text-center">Midterm</label>
+                <input type="range" name="MidtermActual" id="MidtermActual" value="<%- grade.Midterm.actual %>"
+                       min="0" max="<%- _course.meta.Midterm.max %>" />
+                <label class="max"><%- _course.meta.Midterm.max %></label>
+
+                <br>
+
+                <label for="FinalActual" class="mc-text-center">Final</label>
+                <input type="range" name="FinalActual" id="FinalActual" value="<%- grade.Final.actual %>"
+                       min="0" max="<%- _course.meta.Final.max %>" />
+                <label class="max"><%- _course.meta.Final.max %></label>
 
                 <br/>
-                <button id="calActualGradeBtn" data-icon="flat-checkround" data-theme="b">Calculate & Save Grade</button>
+                <button id="calActualGradeBtn" data-icon="flat-checkround" data-theme="b">
+                    Calculate & Save Grade</button>
+
+                <span id="grade"></span>
                 <!--TODO: error alert dialoge-->
 
             </form>

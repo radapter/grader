@@ -8,6 +8,11 @@
     text-align: center;
 }
 
+.mc-text-right{
+    text-align: right;
+    margin-right: 10%;
+}
+
 .form-icon {
     position: absolute;
     width: 50px;
@@ -34,11 +39,15 @@ h4 {
     margin: 0.5em auto;
 }
 
-#createCourseForm .ui-field-contain{
+.ui-field-contain{
     margin: 1% auto;
 }
 
-#createCourseForm p.percent-error{
+.ui-field-contain label{
+    width: 100%;
+}
+
+p.percent-error{
     display: none;
     font-size: larger;
     color: red;
@@ -73,4 +82,18 @@ th {
 
 tr {
     border-bottom: 1px solid #d6d6d6;
+}
+
+div.ui-slider{
+    width: 90%;
+    float:left;
+}
+
+label.max{
+    line-height: 45px;
+    text-align: center;
+}
+
+.student-grade{
+    line-height: 100px;
 }
