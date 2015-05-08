@@ -985,7 +985,9 @@
         <script type="text/template" id="studentEnrollDetailTmp">
             <div data-role="collapsible" data-collapsed="false">
                 <h3><%- _student.fname %> <%- _student.lname %></h3>
-                <h3>Grade: <span class="actual-grade"></span></h3>
+                <h3>Grade: <span class="grade-value"></span>%
+                    (<span class="letter-grade"></span>)
+                </h3>
 
                 <table data-role="table" class="table-breakpoint">
                     <thead>
