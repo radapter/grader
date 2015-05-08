@@ -6,9 +6,10 @@
     var allCoursesList= {};
     var userCourseList= {};
     var tempEnrollData = {};
-    var urlroot = "http://localhost:3000";
+    //var urlroot = "http://localhost:3000";
+    var urlroot = "https://grader-cmpe235.herokuapp.com";
 
-    // Setup the event handlers
+        // Setup the event handlers
     $( document ).on( "ready", function()
     {
         //sessionStorage.clear();
