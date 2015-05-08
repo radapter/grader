@@ -691,13 +691,56 @@
                     <div class="enrollPanel" id="<%- enroll._id %>"
                          data-role="collapsible" data-collapsed-icon="flat-man"
                          data-expanded-icon="flat-cross" data-collapsed="true">
+                        <!--<h5>Grade: <span class="grad-calc"></span></h5>-->
                         <h3><%- enroll._student.fname %> <%- enroll._student.lname %></h3>
-                        <p>Final: <%- enroll.grade.Final.actual %></p>
-                        <p>Midterm: <%- enroll.grade.Midterm.actual %></p>
-                        <p>Presentation: <%- enroll.grade.Presentation.actual %></p>
-                        <p>Project: <%- enroll.grade.Project.actual %></p>
-                        <p>Labs: <%- enroll.grade.Labs.actual %></p>
-                        <p>Homeworks: <%- enroll.grade.Homeworks.actual %></p>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Homework</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Homeworks.actual %></h4>
+                            </div>
+                        </div>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Labs</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Labs.actual %></h4>
+                            </div>
+                        </div>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Project</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Project.actual %></h4>
+                            </div>
+                        </div>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Presentation</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Presentation.actual %></h4>
+                            </div>
+                        </div>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Midterm</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Midterm.actual %></h4>
+                            </div>
+                        </div>
+                        <div class="ui-grid-a mc-text-center">
+                            <div class="ui-block-a">
+                                <h4>Final</h4>
+                            </div>
+                            <div class="ui-block-b">
+                                <h4><%- enroll.grade.Final.actual %></h4>
+                            </div>
+                        </div>
                     </div>
                     <% }); %>
                 </div>
@@ -752,17 +795,45 @@
 
         <!-- BEGIN: studentEnrollDetailTmp for teacher view -->
         <script type="text/template" id="studentEnrollDetailTmp">
+            <div data-role="collapsible" data-collapsed="false">
+                <h3><%- _student.fname %> <%- _student.lname %></h3>
+                <h3>Grade: <span class="actual-grade"></span></h3>
 
-            Student:
-            <h4><%- _student.fname %> <%- _student.lname %></h4>
-
-            Current grade:
-            <h4>Final: <%- grade.Final.actual %> </h4>
-            <h4>Midterm: <%- grade.Midterm.actual %> </h4>
-            <h4>Presentation: <%- grade.Presentation.actual %> </h4>
-            <h4>Project: <%- grade.Project.actual %> </h4>
-            <h4>Labs: <%- grade.Labs.actual %> </h4>
-            <h4>Homeworks: <%- grade.Homeworks.actual %> </h4>
+                <table data-role="table" class="table-breakpoint">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Homework</td>
+                            <td><%- grade.Homeworks.actual %></td>
+                        </tr>
+                        <tr>
+                            <td>Labs</td>
+                            <td><%- grade.Labs.actual %></td>
+                        </tr>
+                        <tr>
+                            <td>Project</td>
+                            <td><%- grade.Project.actual %></td>
+                        </tr>
+                        <tr>
+                            <td>Presentation</td>
+                            <td><%- grade.Presentation.actual %></td>
+                        </tr>
+                        <tr>
+                            <td>Midterm</td>
+                            <td><%- grade.Midterm.actual %></td>
+                        </tr>
+                        <tr>
+                            <td>Final</td>
+                            <td><%- grade.Final.actual %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </script>
         <!-- END: courseDetailTmp Underscore Template Definition. -->
 
