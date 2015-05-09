@@ -93,8 +93,8 @@
                     <div class="ui-block-a"><label for="select-choice-a" class="mc-text-right">I am a:</label></div>
                     <div class="ui-block-b">
                         <select name="userType" id="select-choice-a" data-native-menu="false" data-theme="f">
-                            <option value="student">Student</option>
-                            <option value="teacher">Teacher</option>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
                         </select>
                     </div>
                 </div>
@@ -948,32 +948,39 @@
                     <tr>
                         <th>Item</th>
                         <th>Score</th>
+                        <th>Weight</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>Homework</td>
-                        <td><%- grade.Homeworks.actual %></td>
+                        <td><%- grade.Homeworks.actual %> / <%- _course.meta.Homeworks.max %></td>
+                        <td><%- _course.meta.Homeworks.factor%>%</td>
                     </tr>
                     <tr>
                         <td>Labs</td>
-                        <td><%- grade.Labs.actual %></td>
+                        <td><%- grade.Labs.actual %> / <%- _course.meta.Labs.max %></td>
+                        <td><%- _course.meta.Labs.factor%>%</td>
                     </tr>
                     <tr>
                         <td>Project</td>
-                        <td><%- grade.Project.actual %></td>
+                        <td><%- grade.Project.actual %>/ <%- _course.meta.Project.max %></td>
+                        <td><%- _course.meta.Project.factor%>%</td>
                     </tr>
                     <tr>
                         <td>Presentation</td>
-                        <td><%- grade.Presentation.actual %></td>
+                        <td><%- grade.Presentation.actual %> / <%- _course.meta.Presentation.max %></td>
+                        <td><%- _course.meta.Presentation.factor%>%</td>
                     </tr>
                     <tr>
                         <td>Midterm</td>
-                        <td><%- grade.Midterm.actual %></td>
+                        <td><%- grade.Midterm.actual %> / <%- _course.meta.Midterm.max %></td>
+                        <td><%- _course.meta.Midterm.factor%>%</td>
                     </tr>
                     <tr>
                         <td>Final</td>
-                        <td><%- grade.Final.actual %></td>
+                        <td><%- grade.Final.actual %> / <%- _course.meta.Final.max %></td>
+                        <td><%- _course.meta.Final.factor%>%</td>
                     </tr>
                     </tbody>
                 </table>
@@ -991,36 +998,43 @@
 
                 <table data-role="table" class="table-breakpoint">
                     <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Score</th>
-                        </tr>
+                    <tr>
+                        <th>Item</th>
+                        <th>Score</th>
+                        <th>Weight</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Homework</td>
-                            <td><%- grade.Homeworks.actual %></td>
-                        </tr>
-                        <tr>
-                            <td>Labs</td>
-                            <td><%- grade.Labs.actual %></td>
-                        </tr>
-                        <tr>
-                            <td>Project</td>
-                            <td><%- grade.Project.actual %></td>
-                        </tr>
-                        <tr>
-                            <td>Presentation</td>
-                            <td><%- grade.Presentation.actual %></td>
-                        </tr>
-                        <tr>
-                            <td>Midterm</td>
-                            <td><%- grade.Midterm.actual %></td>
-                        </tr>
-                        <tr>
-                            <td>Final</td>
-                            <td><%- grade.Final.actual %></td>
-                        </tr>
+                    <tr>
+                        <td>Homework</td>
+                        <td><%- grade.Homeworks.actual %> / <%- _course.meta.Homeworks.max %></td>
+                        <td><%- _course.meta.Homeworks.factor%>%</td>
+                    </tr>
+                    <tr>
+                        <td>Labs</td>
+                        <td><%- grade.Labs.actual %> / <%- _course.meta.Labs.max %></td>
+                        <td><%- _course.meta.Labs.factor%>%</td>
+                    </tr>
+                    <tr>
+                        <td>Project</td>
+                        <td><%- grade.Project.actual %>/ <%- _course.meta.Project.max %></td>
+                        <td><%- _course.meta.Project.factor%>%</td>
+                    </tr>
+                    <tr>
+                        <td>Presentation</td>
+                        <td><%- grade.Presentation.actual %> / <%- _course.meta.Presentation.max %></td>
+                        <td><%- _course.meta.Presentation.factor%>%</td>
+                    </tr>
+                    <tr>
+                        <td>Midterm</td>
+                        <td><%- grade.Midterm.actual %> / <%- _course.meta.Midterm.max %></td>
+                        <td><%- _course.meta.Midterm.factor%>%</td>
+                    </tr>
+                    <tr>
+                        <td>Final</td>
+                        <td><%- grade.Final.actual %> / <%- _course.meta.Final.max %></td>
+                        <td><%- _course.meta.Final.factor%>%</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -1127,10 +1141,12 @@
         <a data-iconpos="notext" href="" data-role="button" data-icon="flat-menu"></a>
     </div><!-- /header -->
     <div data-role="content"  class="ui-content">
-
+        <button id="backToEnrollDetailBtn" data-icon="flat-menu" data-theme="e">
+            Back to Enroll Detail</button>
         <!--show this course fileds-->
         <div id="editActualScorePanel"></div>
         <!-- BEGIN: courseDetailTmp -->
+
         <script type="text/template" id="editAcutalScoreTmp">
             <div class="ui-grid-a">
                 <div class="ui-block-a">

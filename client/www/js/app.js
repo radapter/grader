@@ -160,6 +160,7 @@
         $('#backToCourseBtn').on('click', backToCourseDetail);
         //back to enroldetail - student
         $('#backToEnrollBtn').on('click', backToEnrollDetail);
+        $('#backToEnrollDetailBtn').on('click', backToEnrollDetail);
 
 
         //delegate click event on course panel, aim to pass courseid
@@ -167,7 +168,7 @@
             console.log($(this).attr('id'));
 
             //if teacher, go to course detail page
-            if(currentUser.userType === "teacher"){
+            if(currentUser.userType === "Teacher"){
                 var courseId = $(this).attr('id');
                 prepareCourseDetailPage(courseId);
                 //load course success, redirect to courseDeatil page
@@ -175,7 +176,7 @@
             }
 
             //if student, go to enroll detail page
-            if(currentUser.userType === "student"){
+            if(currentUser.userType === "Student"){
                 var enrollId = $(this).attr('id');
                 prepareEnrollDetailPage(enrollId);
                 //load course success, redirect to enrollDetail page
@@ -734,7 +735,7 @@
         $("#userProfilePanel").html(userProfileTmp(currentUser));
 
 
-        if(currentUser.userType === "teacher") {
+        if(currentUser.userType === "Teacher") {
 
             //userhome page setting
             //hide enrolBtn
@@ -787,7 +788,7 @@
     //prepare course detail page based on stored courseList.courses
     var prepareCourseDetailPage = function (courseId) {
 
-        if(currentUser.userType === "teacher") {
+        if(currentUser.userType === "Teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
             prepareEnrollList(courseId);
@@ -834,7 +835,7 @@
     //prepare course show page based on stored allCoursesList.courses
     var prepareCourseShowPage = function (courseId) {
 
-        if(currentUser.userType === "teacher") {
+        if(currentUser.userType === "Teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
             prepareEnrollList(courseId);
@@ -881,7 +882,7 @@
     //prepare course show page based on passed course data
     var prepareCourseDataPage = function (course) {
 
-        if(currentUser.userType === "teacher") {
+        if(currentUser.userType === "Teacher") {
             $('#enrollCourseBtn').hide();
             $('#editCourseBtn').show();
             prepareEnrollList(course._id);
@@ -921,7 +922,7 @@
     //prepare enroll detail page based on stored courseList.enrolls
     var prepareEnrollDetailPage = function (enrollId) {
 
-        if(currentUser.userType === "teacher") {
+        if(currentUser.userType === "Teacher") {
             $('#whatifBtn').hide();
             $('#editScoreBtn').show();
             $('#backToCourseBtn').show();
